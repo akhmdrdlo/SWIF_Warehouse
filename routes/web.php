@@ -22,3 +22,7 @@ Route::post('/signin', [App\Http\Controllers\Auth\LoginController::class, 'login
 
 Route::get('/daftarAdmin', [App\Http\Controllers\Auth\RegisterController::class, 'create']);
 Route::post('/daftarAdmin', [App\Http\Controllers\Auth\RegisterController::class, 'store']);
+
+Route::get('/', [App\Http\Controllers\Auth\IntegratedController::class, 'index']);
+Route::get('/menu', [App\Http\Controllers\Auth\IntegratedController::class, 'index']);
+Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');

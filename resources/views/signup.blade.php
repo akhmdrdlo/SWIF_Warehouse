@@ -1,17 +1,3 @@
-<!--
-=========================================================
-* Material Dashboard 2 - v3.1.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://www.creative-tim.com/license)
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
--->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -56,13 +42,16 @@
                 <form role="form" class="text-start" method="post" action="/daftarAdmin">
                   @csrf
                   <div class="input-group input-group-outline my-3">
-                    <input type="text" name="nama_lengkap" required class="form-control form-control-lg" placeholder="Nama Lengkap kamu..." aria-label="nama_lengkap">
+                    <label class="form-label">Nama Lengkap</label>
+                    <input type="text" name="nama_lengkap" required class="form-control form-control-lg" aria-label="nama_lengkap">
                   </div>
                   <div class="input-group input-group-outline my-3">
-                    <input type="text" name="uname" required class="form-control form-control-lg" placeholder="Usename kamu..." aria-label="username">
+                  <label class="form-label">Username</label>
+                    <input type="text" name="uname" required class="form-control form-control-lg" aria-label="username">
                   </div>
                   <div class="input-group input-group-outline mb-3">
-                    <input type="password" name="password" required class="form-control form-control-lg" placeholder="Password kamu..." aria-label="Password">
+                    <label class="form-label">Password</label>
+                    <input type="password" name="password" required class="form-control form-control-lg" aria-label="Password">
                   </div>
                   <input type="text" name="status" value="Admin" id="" hidden>
                   <div class="text-center">

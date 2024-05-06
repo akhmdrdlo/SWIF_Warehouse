@@ -13,13 +13,13 @@ class RegisterController extends Controller
      */
     public function index()
     {
-        return view('.../layout/daftar');
+        return view('/daftar');
     }
 
     public function indexAdmn()
     {
         $admin = User::all();
-        return view('../layout/admin', compact('admin'));
+        return view('/admin', compact('admin'));
     }
 
     public function create()
@@ -70,8 +70,8 @@ class RegisterController extends Controller
      */
     public function edit($id)
     {
-        $admin = User::findOrFail($id); //mencari admin dengan id yang sesuai atau menampilkan 404 jika tidak ditemukan  
-        return view('../layout/update_admin', compact('admin'));
+        // $admin = User::findOrFail($id); //mencari admin dengan id yang sesuai atau menampilkan 404 jika tidak ditemukan  
+        // return view('', compact('admin'));
     }
 
     /**
@@ -83,20 +83,20 @@ class RegisterController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $admin = User::findOrFail($id);
-        //tarik data yang diinput user dan ubah data di database dengan inputan user tadi
-        $admin->uname = $request->uname;
-        $admin->nama_lengkap = $request->nama_lengkap;
-        $admin->status = $request->status;
-        $admin->password = bcrypt($request->input('password'));
-        $admin->save();
+        // $admin = User::findOrFail($id);
+        // //tarik data yang diinput user dan ubah data di database dengan inputan user tadi
+        // $admin->uname = $request->uname;
+        // $admin->nama_lengkap = $request->nama_lengkap;
+        // $admin->status = $request->status;
+        // $admin->password = bcrypt($request->input('password'));
+        // $admin->save();
         
-        if($id==Auth::user()->id){
-            return redirect('/admin')->with('success', 'Data diri kamu berhasil diubah!!');
-        }else{
-            //bila berhasil diubah, kembali ke page barang dan munculkan alert
-            return redirect('/admin')->with('success', 'Data Admin berhasil diubah!!');
-        }
+        // if($id==Auth::user()->id){
+        //     return redirect('/admin')->with('success', 'Data diri kamu berhasil diubah!!');
+        // }else{
+        //     //bila berhasil diubah, kembali ke page barang dan munculkan alert
+        //     return redirect('/admin')->with('success', 'Data Admin berhasil diubah!!');
+        // }
     }
 
     /**
