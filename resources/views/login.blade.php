@@ -62,7 +62,6 @@
                       <label class="form-label">Password</label>
                       <input type="password" name="password" required autocomplete="off" class="form-control">
                     </div>
-                    <input type="text" name="status" value="Admin" id="" hidden>
                     <div class="text-center">
                       <button type="submit" class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0">MASUK</button>
                     </div>
