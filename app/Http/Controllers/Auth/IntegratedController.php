@@ -13,7 +13,7 @@ class IntegratedController extends Controller
      */
     public function index()
     {
-        return view('/menu');
+        return view('/dashboard');
     }
 
     /**
