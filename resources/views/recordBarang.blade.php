@@ -20,6 +20,7 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
   <!-- CSS Files -->
   <link id="pagestyle" href="{{asset('assets/css/material-dashboard.css?v=3.1.0')}}" rel="stylesheet" />
+  <link rel="stylesheet" href="{{asset('assets/css/jquery.dataTables.min.css')}}">
   <!-- Nepcha Analytics (nepcha.com) -->
   <!-- Nepcha is a easy-to-use web analytics. No cookies and fully compliant with GDPR, CCPA and PECR. -->
   <script defer data-site="YOUR_DOMAIN_HERE" src="https://api.nepcha.com/js/nepcha-analytics.js"></script>
@@ -41,7 +42,7 @@
     <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link text-white active bg-gradient-primary" href="/menu">
+          <a class="nav-link text-white " href="/menu">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">dashboard</i>
             </div>
@@ -56,8 +57,8 @@
             <span class="nav-link-text ms-1">Tabel Barang</span>
           </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link text-white " href="/historiBarang">
+        <li class="nav-item ">
+          <a class="nav-link text-white active bg-gradient-primary" href="/historiBarang">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">watch</i>
             </div>
@@ -65,14 +66,6 @@
           </a>
         <li class="nav-item mt-3">
           <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account pages</h6>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white " href="">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">person</i>
-            </div>
-            <span class="nav-link-text ms-1">Profile</span>
-          </a>
         </li>
         <li class="nav-item">
           <a class="nav-link text-white " href="#" data-bs-toggle="modal" data-bs-target="#logout">
@@ -94,9 +87,9 @@
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
             <li class="breadcrumb-item text-sm"><a class="opacity-5 text-white" href="javascript:;">Halaman</a></li>
-            <li class="breadcrumb-item text-sm text-white active" aria-current="page">Menu Utama</li>
+            <li class="breadcrumb-item text-sm text-white active" aria-current="page">Pengelola Barang</li>
           </ol>
-          <h6 class="font-weight-bolder mb-0 text-white">Menu Utama</h6>
+          <h6 class="font-weight-bolder mb-0 text-white">Histori Barang</h6>
         </nav>
         <nav>
           <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
@@ -127,125 +120,91 @@
       </div>
     </nav>
     <!-- End Navbar -->
-
-    @if (session('success'))
-        <div class="alert alert-success text-white text-center">
-            {{ session('success') }}
-        </div>
-    @elseif (session('danger'))
-        <div class="alert alert-danger text-white text-center">
-            {{ session('danger') }}
-        </div>
-    @endif
     <div class="container-fluid py-4">
       <div class="row">
-        <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
-          <div class="card">
-            <div class="card-header p-3 pt-2">
-              <div class="icon icon-lg icon-shape bg-gradient-dark shadow-dark text-center border-radius-xl mt-n4 position-absolute">
-                <i class="material-icons opacity-10">inventory</i>
-              </div>
-              <div class="text-end pt-1">
-                <p class="text-sm mb-0 text-capitalize">Total Stok</p>
-                <h4 class="mb-0">{{ $totalStock }} Boks</h4>
+        <div class="col-12">
+          @if (session('success'))
+          <div class="alert alert-success text-white mb-3">
+              {{ session('success') }}
+          </div>
+      @elseif (session('warning'))
+          <div class="alert alert-warning text-white mb-3">
+              {{ session('warning') }}
+          </div>
+      @elseif (session('primary'))
+          <div class="alert alert-primary text-white mb-3">
+              {{ session('primary') }}
+          </div>
+      @elseif (session('danger'))
+          <div class="alert alert-danger text-white mb-3">
+              {{ session('danger') }}
+          </div>
+      @endif
+          <div class="card my-4">
+            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+              <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3 px-4">
+                <h6 class="text-white text-capitalize ps-3">Histori Barang</h6>
+                @if (session('id'))
+                <a href="#" class="btn btn-info float-end mx-2" style="margin-top:-35px;">
+                  <i class="fa fa-file-invoice mr-1"></i>
+                </a>
+                @endif
               </div>
             </div>
-            <hr class="dark horizontal my-0">
-          </div>
-        </div>
-        <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
-          <div class="card">
-            <div class="card-header p-3 pt-2">
-              <div class="icon icon-lg icon-shape bg-gradient-primary shadow-primary text-center border-radius-xl mt-n4 position-absolute">
-                <i class="material-icons opacity-10">input</i>
-              </div>
-              <div class="text-end pt-1">
-                <p class="text-sm mb-0 text-capitalize">Total Barang Masuk</p>
-                <h4 class="mb-0">{{$totalReceiveMonthly}}</h4>
-              </div>
-            </div>
-            <hr class="dark horizontal my-0">
-          </div>
-        </div>
-        <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
-          <div class="card">
-            <div class="card-header p-3 pt-2">
-              <div class="icon icon-lg icon-shape bg-gradient-success shadow-success text-center border-radius-xl mt-n4 position-absolute">
-                <i class="material-icons opacity-10">output</i>
-              </div>
-              <div class="text-end pt-1">
-                <p class="text-sm mb-0 text-capitalize">Total Barang Keluar</p>
-                <h4 class="mb-0">2500</h4>
-              </div>
-            </div>
-            <hr class="dark horizontal my-0">
-          </div>
-        </div>
-      </div>
-      <div class="container-fluid py-4">
-        <div class="row">
-          <div class="col-lg-4">
-            <div class="row">
-              <div class="card">
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h5 class="font-weight-bolder">Logo Gudang</h5>
-                </div>
-                <div class="card-body py-3 d-flex flex-row align-items-center justify-content-between">
-                    <img src="{{asset('assets/img/icons/swif_full_black.png')}}" alt="Logo" width="270px" height="auto">
-                </div> 
-              
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-8">
-            <div class="card h-100">
-              <div class="card-header pb-0 p-3">
-                <div class="row">
-                  <div class="col-6 d-flex text-center">
-                    <h5 class="mb-0">Informasi Gudang</h5>
-                  </div>
-                </div>
-              </div>
-              <div class="card-body p-3 pb-0">
-                <ul class="list-group">
-                  <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
-                    <div class="d-flex flex-column">
-                      <h6 class="mb-1 text-dark font-weight-bold text-lg">Nama Gudang</h6>
-                    </div>
-                    <div class="d-flex align-items-center text-lg">
-                      SWIF Warehouse
-                    </div>
-                  </li>
-                  <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
-                    <div class="d-flex flex-column">
-                      <h6 class="mb-1 text-dark font-weight-bold text-lg">Tipe Gudang</h6>
-                    </div>
-                    <div class="d-flex align-items-center text-lg">
-                      Gudang Pribadi
-                    </div>
-                  </li>
-                  <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
-                    <div class="d-flex flex-column">
-                      <h6 class="mb-1 text-dark font-weight-bold text-lg">Lokasi Gudang</h6>
-                    </div>
-                    <div class="d-flex align-items-center text-lg">
-                      Jln.Merak, No 124, Desa Sekarmulya, Cipadung Kulon, Kota Bandung
-                    </div>
-                  </li>
-                  <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
-                    <div class="d-flex flex-column">
-                      <h6 class="mb-1 text-dark font-weight-bold text-lg">Nama Pemilik/Instansi</h6>
-                    </div>
-                    <div class="d-flex align-items-center text-lg">
-                      SWIF Team - Group 3
-                    </div>
-                  </li>
-                </ul>
+            <div class="card-body px-4 pb-2">
+              <div class="table-responsive p-0">
+                <table class="table align-items-center mb-0" id="tabel">
+                  <thead>
+                    <tr>
+                      <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">No</th>
+                      <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Merek Barang</th>
+                      <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">Kategori</th>
+                      <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Nama Supplier</th>
+                      <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Username Aksi</th>
+                      <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Stok Terubah</th>
+                      <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ">Proses</th>
+                      <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ">Terakhir Diubah</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @foreach($records as $log)
+                    <tr>
+                      <td> 
+                        <div class="d-flex px-2 py-1">
+                          <h4 class="mb-0 text-xs">{{$loop->iteration}}</h4>
+                        </div>
+                      </td>
+                      <td>
+                        <p class="text-xs text-uppercase font-weight-bold mb-0">{{$log->merek}}</p>
+                      </td>
+                      <td>
+                        <p class="text-xs text-uppercase font-weight-bold mb-0">{{$log->kategori}}</p>
+                      </td>
+                      <td class="align-middle text-center text-xs">
+                        <p class="text-xs font-weight-bold mb-0">{{$log->supplier}}</p>
+                      </td>
+                      <td class="align-middle text-center">
+                        <span class="text-secondary text-xs font-weight-bold">{{$log->uname}}</span>
+                      </td>            
+                      <td class="align-middle text-center">
+                        <span class="text-secondary text-xs font-weight-bold">{{$log->stok}}</span>
+                      </td>
+                      <td class="align-middle text-center">
+                        <span class="text-secondary text-xs font-weight-bold">{{$log->proses}}</span>
+                      </td>
+                      <td class="align-middle text-center">
+                        <span class="text-secondary text-xs font-weight-bold">{{$log->updated_at}}</span>
+                      </td>
+                    </tr>
+                    @endforeach
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
         </div>
       </div>
+
       <footer class="footer py-4  ">
         <div class="container-fluid">
           <div class="row align-items-center justify-content-lg-between">
@@ -265,6 +224,7 @@
       </footer>
     </div>
   </main>
+
   <div class="modal fade" id="logout" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -340,7 +300,9 @@
   <script src="{{asset('assets/js/core/bootstrap.min.js')}}"></script>
   <script src="{{asset('assets/js/plugins/perfect-scrollbar.min.js')}}"></script>
   <script src="{{asset('assets/js/plugins/smooth-scrollbar.min.js')}}"></script>
-  <script src="{{asset('assets/js/plugins/chartjs.min.js')}}"></script>
+  <script src="{{asset('assets/js/plugins/chartjs.min.js')}}"></script>>
+  <script src="{{asset('assets/js/jquery.min.js')}}"></script>
+  <script src="{{asset('assets/js/jquery.dataTables.min.js')}}"></script>
   <script>
     var win = navigator.platform.indexOf('Win') > -1;
     if (win && document.querySelector('#sidenav-scrollbar')) {
@@ -349,6 +311,9 @@
       }
       Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
     }
+    $(document).ready(function(){
+      $("#tabel").DataTable();
+    });
   </script>
   <!-- Github buttons -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>

@@ -3,9 +3,49 @@
 namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Barang;
+use App\Models\kategori;
+use App\Models\User;
+use Carbon\Carbon;
 
 class IntegratedController extends Controller
 {
+    private function getStartDateFromUserCalendar()
+    {
+        // Implementasikan logika untuk mendapatkan start_date dari kalender sistem user
+        // Contoh: Dapatkan tanggal awal bulan dari preferensi user
+        $startDate = Carbon::now()->startOfMonth();
+        return $startDate;
+    }
+
+    private function getEndDateFromUserCalendar()
+    {
+        // Implementasikan logika untuk mendapatkan end_date dari kalender sistem user
+        // Contoh: Dapatkan tanggal akhir bulan dari preferensi user
+        $endDate = Carbon::now()->endOfMonth();
+        return $endDate;
+    }
+        
+    public function getTotalReceiveMonthly()
+    {
+        $startDate = $this->getStartDateFromUserCalendar(); // Dapatkan start_date
+        $endDate = $this->getEndDateFromUserCalendar(); // Dapatkan end_date
+    
+        // Hitung jumlah barang masuk dalam rentang waktu
+        $barangMasukBulan = Barang::whereBetween('created_at', [$startDate, $endDate])
+            ->sum('stok');
+        return $barangMasukBulan;
+    }
+   
+    public function getTotalStok()
+    {
+    $totalStock = Barang::sum('stok');
+    return $totalStock;
+    }
+    // public function getTotalKategori(){
+    //     $jumlahKategori = kategori::count();
+    //     return $jumlahKategori;
+    // }
     /**
      * Display a listing of the resource.
      *
@@ -13,7 +53,13 @@ class IntegratedController extends Controller
      */
     public function index()
     {
-        return view('/dashboard');
+        $barangs = Barang::all();
+
+        $kategori = kategori::all();
+        $totalStock = $this->getTotalStok();
+        $totalReceiveMonthly = $this->getTotalReceiveMonthly();
+        // $kategoriAll = $this->getTotalKategori();
+        return view('/dashboard', compact('totalStock','totalReceiveMonthly'));
     }
 
     /**
@@ -81,4 +127,6 @@ class IntegratedController extends Controller
     {
         //
     }
+
+
 }

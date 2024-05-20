@@ -1,14 +1,6 @@
-{{Auth::logout()}}
 
-@if (session('success'))
-    <div class="alert alert-success text-white">
-        {{ session('success') }}
-    </div>
-@elseif (session('danger'))
-    <div class="alert alert-danger text-white">
-        {{ session('danger') }}
-    </div>
-@endif
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -16,7 +8,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="apple-touch-icon" sizes="76x76" href="{{asset('assets/img/apple-icon.png')}}">
-  <link rel="icon" type="image/png" href="{{asset('assets/img/favicon.png')}}">
+  <link rel="icon" type="image/png" href="{{asset('assets/img/icons/swif_logo.png')}}">
   <title>
       SWIF - Warehouse Management System
   </title>
@@ -49,6 +41,15 @@
             <div class="col-xl-4 col-lg-5 col-md-7 d-flex flex-column ms-auto me-auto ms-lg-auto me-lg-5">
               <div class="card card-plain">
                 <div class="card-header">
+                  @if (session('success'))
+                      <div class="alert alert-success text-white">
+                          {{ session('success') }}
+                      </div>
+                  @elseif (session('danger'))
+                      <div class="alert alert-danger text-white">
+                          {{ session('danger') }}
+                      </div>
+                  @endif
                   <h4 class="font-weight-bolder">Login dulu yuk!</h4>
                 </div>
                 <div class="card-body">
@@ -69,8 +70,7 @@
                 </div>
                 <div class="card-footer text-center pt-0 px-lg-2 px-1">
                   <p class="mb-2 text-sm mx-auto">
-                    Belum punya akun
-                    <a href="/daftarAdmin" class="text-primary text-gradient font-weight-bold">Daftar</a>
+                    Belum punya akun Silahkan hubungi superadministrator!!
                   </p>
                 </div>
               </div>

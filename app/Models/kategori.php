@@ -9,19 +9,10 @@ class kategori extends Model
 {
     use HasFactory;
     
-    protected $table = 'kategori';
+    protected $table = 'kategoris';
 
     protected $dates = ['created_at', 'updated_at'];
 
-    public function getCreatedAtAttribute($value)
-    {
-        return Carbon::parse($value)->timezone('Asia/Jakarta');
-    }
-
-    public function getUpdatedAtAttribute($value)
-    {
-        return Carbon::parse($value)->timezone('Asia/Jakarta');
-    }
     protected $fillable = [
         'id',
     ];
@@ -32,4 +23,14 @@ class kategori extends Model
     protected $hidden = [
         'id',
     ];
+
+    public function getCreatedAtAttribute($value)
+    {
+        return Carbon::parse($value)->withZone('Asia/Jakarta');
+    }
+
+    public function getUpdatedAtAttribute($value)
+    {
+        return Carbon::parse($value)->withZone('Asia/Jakarta');
+    }
 }

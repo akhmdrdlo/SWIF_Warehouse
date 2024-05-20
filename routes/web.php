@@ -13,16 +13,24 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
+Route::get('/', [App\Http\Controllers\Auth\LoginController::class, 'index']);
 Route::get('/signin', [App\Http\Controllers\Auth\LoginController::class, 'index']);
 Route::post('/signin', [App\Http\Controllers\Auth\LoginController::class, 'login']);
 
 Route::get('/daftarAdmin', [App\Http\Controllers\Auth\RegisterController::class, 'create']);
 Route::post('/daftarAdmin', [App\Http\Controllers\Auth\RegisterController::class, 'store']);
 
-Route::get('/', [App\Http\Controllers\Auth\IntegratedController::class, 'index']);
 Route::get('/menu', [App\Http\Controllers\Auth\IntegratedController::class, 'index']);
 Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
+
+Route::get('/barang', [App\Http\Controllers\Auth\BarangController::class, 'index']);
+Route::post('/addBarang', [App\Http\Controllers\Auth\BarangController::class, 'store'])->name('tambah');
+Route::post('/addKategori', [App\Http\Controllers\Auth\BarangController::class, 'storeKat'])->name('tambahKat');
+
+Route::get('/editBarang/{id}', [App\Http\Controllers\Auth\BarangController::class, 'edit'])->name('barang.edit');
+Route::put('/editBarang/{id}', [App\Http\Controllers\Auth\BarangController::class, 'update'])->name('barang.update');
+
+Route::delete('/editBarang/{id}', [App\Http\Controllers\Auth\BarangController::class, 'destroy'])->name('barang.destroy');
+
+Route::get('/historiBarang',[App\Http\Controllers\Auth\BarangController::class, 'tampilRecord']);
+Route::delete('/historiBarang/{id}', [App\Http\Controllers\Auth\BarangController::class, 'destroyRecord'])->name('log.destroy');

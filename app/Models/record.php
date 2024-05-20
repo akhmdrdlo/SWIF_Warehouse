@@ -8,7 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class record extends Model
 {
     use HasFactory;
-    protected $table = 'logs';
+    protected $table = 'records';
 
-    protected $fillable = ['merek', 'uname', 'updated_at'];
+    protected $fillable = [
+        'brg_id',
+        'kat_id', 
+        'uname',
+        'supplier', 
+        'stok',
+        'proses',
+    ];
 }

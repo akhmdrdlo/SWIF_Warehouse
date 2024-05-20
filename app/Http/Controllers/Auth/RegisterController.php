@@ -37,7 +37,7 @@ class RegisterController extends Controller
         $ifDuplicate = $request->input('uname');
         $user = User::where('uname', $ifDuplicate)->first();
         if($user){
-            return redirect('/admin')->with('danger', 'Akun '.$request->input('uname').' sudah terpakai!! Coba username');
+            return redirect('/daftarAdmin')->with('danger', 'Akun '.$request->input('uname').' sudah terpakai!! Coba username');
         }else{
             $user = new User;
             $user->uname = $ifDuplicate;
