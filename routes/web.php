@@ -23,6 +23,10 @@ Route::post('/daftarAdmin', [App\Http\Controllers\Auth\RegisterController::class
 Route::get('/menu', [App\Http\Controllers\Auth\IntegratedController::class, 'index']);
 Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
 
+Route::post('/ubahGudang', [App\Http\Controllers\Auth\GudangController::class, 'store'])->name('ubahGudang');
+Route::get('/editGudang/{id}', [App\Http\Controllers\Auth\GudangController::class, 'edit'])->name('gudang.edit');
+Route::get('/editGudang/{id}', [App\Http\Controllers\Auth\GudangController::class, 'update'])->name('gudang.update');
+
 Route::get('/barang', [App\Http\Controllers\Auth\BarangController::class, 'index']);
 Route::post('/addBarang', [App\Http\Controllers\Auth\BarangController::class, 'store'])->name('tambah');
 Route::post('/addKategori', [App\Http\Controllers\Auth\BarangController::class, 'storeKat'])->name('tambahKat');
@@ -34,3 +38,7 @@ Route::delete('/editBarang/{id}', [App\Http\Controllers\Auth\BarangController::c
 
 Route::get('/historiBarang',[App\Http\Controllers\Auth\BarangController::class, 'tampilRecord']);
 Route::delete('/historiBarang/{id}', [App\Http\Controllers\Auth\BarangController::class, 'destroyRecord'])->name('log.destroy');
+
+Route::get('/pengiriman', [App\Http\Controllers\Auth\ShipmentController::class, 'index']);
+Route::get('/addShipmentView', [App\Http\Controllers\Auth\ShipmentController::class, 'create']);
+Route::post('/addShipment', [App\Http\Controllers\Auth\ShipmentController::class, 'store']);

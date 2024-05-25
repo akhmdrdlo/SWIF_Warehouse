@@ -49,7 +49,7 @@ class RegisterController extends Controller
             return redirect('/signin')->with('success', 'Akun '.$request->input('nama_lengkap').' berhasil dibuat! Silakan login untuk melanjutkan.');
         }
 
-    }
+    }   
 
     /**
      * Display the specified resource.

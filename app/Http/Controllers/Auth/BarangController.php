@@ -166,7 +166,7 @@ class BarangController extends Controller
         $records->supplier = $barang->supplier;
         $records->stok = '-'.$stok;
         $records->proses = "HAPUS STOK";
-        $records->delete();
+        $records->save();
 
         return redirect('/barang')->with('danger', 'Barang berhasil dihapus.');
     }

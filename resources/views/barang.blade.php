@@ -64,6 +64,15 @@
             </div>
             <span class="nav-link-text ms-1">Record Data</span>
           </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white " href="/pengiriman">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">flight</i>
+            </div>
+            <span class="nav-link-text ms-1">Pengiriman Barang</span>
+          </a>
+        </li>
         <li class="nav-item mt-3">
           <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account pages</h6>
         </li>
@@ -198,6 +207,9 @@
                         @if(session('id'))
                         <a href="{{ route('barang.edit', $barang->id) }}" class="text-secondary font-weight-bold text-md" data-toggle="tooltip" data-original-title="Edit barang">
                           <span class="badge badge-sm bg-warning"><i class="fa fa-pen"></i> Ubah</span>
+                        </a>
+                        <a href="{{ route('barang.edit', $barang->id) }}" class="text-secondary font-weight-bold text-md" data-toggle="tooltip" data-original-title="Edit barang">
+                          <span class="badge badge-sm bg-info"><i class="fa fa-truck"></i> Kirim</span>
                         </a>
                         @endif
                       </td>

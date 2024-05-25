@@ -5,20 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class barang extends Model
+class shipment extends Model
 {
     use HasFactory;
-    
-    protected $table = 'barangs';
-    protected $fillable = [
-        'id',
-        'kat_id',
-        'merek',
-        'stok',
-        'lokasi',
-    ];
 
     
+    protected $table = 'shipment';
+    protected $fillable = [
+        'id',
+        'invoice_id',
+        'gdg_id',
+        'staff_id',
+    ];
+
     protected $dates = ['created_at', 'updated_at'];
 
 
@@ -26,5 +25,4 @@ class barang extends Model
         'id',
         'remember_token',
     ];
-
 }

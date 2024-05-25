@@ -6,22 +6,19 @@ use Illuminate\Http\Request;
 use App\Models\Barang;
 use App\Models\kategori;
 use App\Models\User;
+use App\Models\Gudang;
 use Carbon\Carbon;
 
 class IntegratedController extends Controller
 {
     private function getStartDateFromUserCalendar()
     {
-        // Implementasikan logika untuk mendapatkan start_date dari kalender sistem user
-        // Contoh: Dapatkan tanggal awal bulan dari preferensi user
         $startDate = Carbon::now()->startOfMonth();
         return $startDate;
     }
 
     private function getEndDateFromUserCalendar()
     {
-        // Implementasikan logika untuk mendapatkan end_date dari kalender sistem user
-        // Contoh: Dapatkan tanggal akhir bulan dari preferensi user
         $endDate = Carbon::now()->endOfMonth();
         return $endDate;
     }
@@ -53,13 +50,11 @@ class IntegratedController extends Controller
      */
     public function index()
     {
-        $barangs = Barang::all();
-
-        $kategori = kategori::all();
+        $dataGudang = gudang::all();
         $totalStock = $this->getTotalStok();
         $totalReceiveMonthly = $this->getTotalReceiveMonthly();
         // $kategoriAll = $this->getTotalKategori();
-        return view('/dashboard', compact('totalStock','totalReceiveMonthly'));
+        return view('/dashboard', compact('dataGudang','totalStock','totalReceiveMonthly'));
     }
 
     /**

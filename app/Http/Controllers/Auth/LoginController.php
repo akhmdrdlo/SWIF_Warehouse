@@ -19,8 +19,9 @@ class LoginController extends Controller
         if (Auth::attempt($credentials)) { //melakukan autentifikasi 
             // Authentikasi berhasil dilakukan
             $uname = Auth::user()->uname;
-            $nama_lengkap = Auth::user()->nama_lengkap; //menambahkan variabel $nama_lengkap untuk session menu
-            session(['id' => Auth::user()->uname]); //buat session untuk menampilkan nama (uname) dimenu
+            $nama_lengkap = Auth::user()->nama_lengkap;
+            $status = Auth::user()->status;  //menambahkan variabel $nama_lengkap untuk session menu
+            session(['id' => Auth::user()->uname]); //buat session untuk menampilkan nama (uname) dimenu]
             return redirect('/menu')->with('success', "Selamat datang kembali, $nama_lengkap di SWIF!!");
         } else {
             // Authentikasi gagal dilakukan
@@ -93,9 +94,7 @@ class LoginController extends Controller
     {
         // hapus session login
         Auth::logout();
-
         $request->session()->invalidate();
-
         $request->session()->regenerateToken();
 
         // redirect ke halaman login

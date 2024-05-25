@@ -21,6 +21,7 @@ class User extends Authenticatable
         'uname',
         'password',
         'nama_lengkap',
+        'notelp',
         'status'
     ];
 
