@@ -64,8 +64,17 @@
             </div>
             <span class="nav-link-text ms-1">Record Data</span>
           </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white " href="/pengiriman">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">flight</i>
+            </div>
+            <span class="nav-link-text ms-1">Pengiriman Barang</span>
+          </a>
+        </li>
         <li class="nav-item mt-3">
-          <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account pages</h6>
+          <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Jendela Akun</h6>
         </li>
         <li class="nav-item">
           <a class="nav-link text-white " href="#" data-bs-toggle="modal" data-bs-target="#logout">
@@ -89,7 +98,7 @@
             <li class="breadcrumb-item text-sm"><a class="opacity-5 text-white" href="javascript:;">Halaman</a></li>
             <li class="breadcrumb-item text-sm text-white active" aria-current="page">Pengelola Barang</li>
           </ol>
-          <h6 class="font-weight-bolder mb-0 text-white">Tabel Barang</h6>
+          <h6 class="font-weight-bolder mb-0 text-white">Pembaharu Barang</h6>
         </nav>
         <nav>
           <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">

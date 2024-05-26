@@ -74,7 +74,7 @@
           </a>
         </li>
         <li class="nav-item mt-3">
-          <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account pages</h6>
+          <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Jendela Akun</h6>
         </li>
         <li class="nav-item">
           <a class="nav-link text-white " href="#" data-bs-toggle="modal" data-bs-target="#logout">
@@ -96,9 +96,9 @@
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
             <li class="breadcrumb-item text-sm"><a class="opacity-5 text-white" href="javascript:;">Halaman</a></li>
-            <li class="breadcrumb-item text-sm text-white active" aria-current="page">Pengelola Barang</li>
+            <li class="breadcrumb-item text-sm text-white active" aria-current="page">Pengelola Peniriman</li>
           </ol>
-          <h6 class="font-weight-bolder mb-0 text-white">Tabel Barang</h6>
+          <h6 class="font-weight-bolder mb-0 text-white">Tabel Pengiriman</h6>
         </nav>
         <nav>
           <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
@@ -151,10 +151,10 @@
       @endif
           <div class="card my-4">
             <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-              <div class="bg-gradient-info shadow-primary border-radius-lg pt-4 pb-3 px-4">
-                <h6 class="text-white text-capitalize ps-3">Tabel Barang</h6>
+              <div class="bg-gradient-secondary shadow-primary border-radius-lg pt-4 pb-3 px-4">
+                <h6 class="text-white text-capitalize ps-3">Tabel Pengiriman</h6>
                 @if (session('id'))
-                <a href="addShipmentView" class="btn btn-success float-end" style="margin-top:-35px;">
+                <a href="addShipmentView" class="btn btn-info float-end" style="margin-top:-35px;">
                   <i class="fa fa-truck"></i> Kirim barang
                 </a>
                 @endif
@@ -172,13 +172,14 @@
                       <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Instansi Penerima</th>
                       <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Alamat Penerima</th>
                       <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ">Proses Pengiriman</th>
-                      <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ">Detail Pengiriman</th>
+                      <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ">Detail</th>
 
                     </tr>
                   </thead>
                   <tbody>
                     @foreach($shipmentjoin as $shipment)
                       @foreach($shipmentDetailJoin as $shipmentDetail)
+                      @if ($shipmentDetail->shipor_id == $shipment->id)
                     <tr>
                       <td> 
                         <div class="d-flex px-2 py-1">
@@ -201,21 +202,31 @@
                         <span class="text-secondary text-xs font-weight-bold">{{$shipmentDetail->alamat_kirim}}</span>
                       </td>
                       <td class="align-middle text-center">
-                        <span class="text-secondary text-xs font-weight-bold">{{$shipmentDetail->status}}</span>
+                        <span class="text-xs font-weight-bold text-white badge badge-sm
+                        @if ($shipmentDetail->status == "Diproses"){
+                          bg-secondary
+                        }@elseif ($shipmentDetail->status == "Dikirim"){
+                          bg-info
+                        }@elseif ($shipmentDetail->status == "Selesai"){
+                          bg-success
+                        }@elseif ($shipmentDetail->status == "Gagal"){
+                          bg-danger
+                        } 
+                        @endif
+                        ">{{$shipmentDetail->status}}</span>
                       </td>
-                      <td class="align-middle">
-                        {{-- @if(session('id'))
-                        <a href="{{ route('shipment.edit', $shipment->id) }}" class="text-secondary font-weight-bold text-md" data-toggle="tooltip" data-original-title="Edit shipment">
-                          <span class="badge badge-sm bg-warning"><i class="fa fa-pen"></i> Ubah</span>
+                      <td class="align-middle text-center">
+                        <a href="{{ route('shipDetail.show', $shipment->id) }}" class="text-secondary font-weight-bold text-lg">
+                          <span class="badge badge-lg bg-info"><i class="fa fa-info"></i></span>
                         </a>
-                        <a href="{{ route('shipment.show', $shipment->id) }}" class="text-secondary font-weight-bold text-md" data-toggle="tooltip" data-original-title="Edit barang">
-                          <span class="badge badge-sm bg-info"><i class="fa fa-truck"></i> Kirim</span>
+                        <a href="{{ route('shipDetail.edit', $shipment->id) }}" class="text-secondary font-weight-bold text-lg">
+                          <span class="badge badge-lg bg-warning"><i class="fa fa-truck-pickup"></i></span>
                         </a>
-                        @endif --}}
                       </td>
                     </tr>
-                      @endforeach
+                    @endif
                     @endforeach
+                  @endforeach
                   </tbody>
                 </table>
               </div>

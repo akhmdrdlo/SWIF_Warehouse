@@ -119,6 +119,31 @@ class BarangController extends Controller
             $finalstok = '+'.$stok;
         }
 
+        $merek = $barang->merek;
+        $supplier = $barang->supplier;
+        $stok = $barang->stok;
+    
+        $requestMerek = $request->merek;
+        $requestSupplier = $request->supplier;
+        $requestStok = $request->stok;
+    
+        $prosesAkhir = "";
+    
+        // Check if merek has changed
+        if ($supplier == $requestSupplier && $merek != $requestMerek && $stok == $requestStok) {
+            $prosesAkhir = "UPDATE MEREK";
+        }
+    
+        // Check if supplier has changed
+        if ($supplier != $requestSupplier && $merek == $requestMerek && $stok == $requestStok) {
+            $prosesAkhir .= "UPDATE SUPPLIER";
+        }
+    
+        // Check if stok has changed
+        if ($supplier == $requestSupplier && $merek == $requestMerek && $stok != $requestStok) {
+            $prosesAkhir .= "UPDATE STOK";
+        }
+
         $barang->merek = $request->merek;
         $barang->supplier = $request->supplier;
         $barang->kat_id = $request->kat_id;
@@ -132,7 +157,7 @@ class BarangController extends Controller
         $records->uname = Auth::user()->uname;
         $records->supplier = $barang->supplier;
         $records->stok = $finalstok;
-        $records->proses = "UPDATE STOK";
+        $records->proses = $prosesAkhir;
         $records->save();
         
         //bila berhasil diubah, kembali ke page barang dan munculkan alert

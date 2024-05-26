@@ -74,7 +74,7 @@
           </a>
         </li>
         <li class="nav-item mt-3">
-          <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account pages</h6>
+          <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Jendela Akun</h6>
         </li>
         <li class="nav-item">
           <a class="nav-link text-white " href="#" data-bs-toggle="modal" data-bs-target="#logout">
@@ -207,9 +207,6 @@
                         @if(session('id'))
                         <a href="{{ route('barang.edit', $barang->id) }}" class="text-secondary font-weight-bold text-md" data-toggle="tooltip" data-original-title="Edit barang">
                           <span class="badge badge-sm bg-warning"><i class="fa fa-pen"></i> Ubah</span>
-                        </a>
-                        <a href="{{ route('barang.edit', $barang->id) }}" class="text-secondary font-weight-bold text-md" data-toggle="tooltip" data-original-title="Edit barang">
-                          <span class="badge badge-sm bg-info"><i class="fa fa-truck"></i> Kirim</span>
                         </a>
                         @endif
                       </td>

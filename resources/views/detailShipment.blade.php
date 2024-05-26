@@ -20,6 +20,8 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
   <!-- CSS Files -->
   <link id="pagestyle" href="{{asset('assets/css/material-dashboard.css?v=3.1.0')}}" rel="stylesheet" />
+  <link rel="stylesheet" href="{{asset('assets/css/jquery.dataTables.min.css')}}">
+  <link href="{{asset('assets/css/select2.min.css')}}" rel="stylesheet" />
   <!-- Nepcha Analytics (nepcha.com) -->
   <!-- Nepcha is a easy-to-use web analytics. No cookies and fully compliant with GDPR, CCPA and PECR. -->
   <script defer data-site="YOUR_DOMAIN_HERE" src="https://api.nepcha.com/js/nepcha-analytics.js"></script>
@@ -41,7 +43,7 @@
     <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link text-white active bg-gradient-primary" href="/menu">
+          <a class="nav-link text-white " href="/menu">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">dashboard</i>
             </div>
@@ -49,7 +51,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="/barang">
+          <a class="nav-link text-white" href="/barang">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">table_view</i>
             </div>
@@ -65,7 +67,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="/pengiriman">
+          <a class="nav-link text-white active bg-gradient-primary" href="/pengiriman">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">flight</i>
             </div>
@@ -75,7 +77,6 @@
         <li class="nav-item mt-3">
           <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Jendela Akun</h6>
         </li>
-
         <li class="nav-item">
           <a class="nav-link text-white " href="#" data-bs-toggle="modal" data-bs-target="#logout">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -94,12 +95,12 @@
     <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" data-scroll="true">
       <div class="container-fluid py-1 px-3">
         <nav aria-label="breadcrumb">
-          <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
-            <li class="breadcrumb-item text-sm"><a class="opacity-5 text-white" href="javascript:;">Halaman</a></li>
-            <li class="breadcrumb-item text-sm text-white active" aria-current="page">Menu Utama</li>
-          </ol>
-          <h6 class="font-weight-bolder mb-0 text-white">Menu Utama</h6>
-        </nav>
+            <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+              <li class="breadcrumb-item text-sm"><a class="opacity-5 text-white" href="javascript:;">Halaman</a></li>
+              <li class="breadcrumb-item text-sm text-white active" aria-current="page">Pengelola Peniriman</li>
+            </ol>
+            <h6 class="font-weight-bolder mb-0 text-white">Detail Pengiriman</h6>
+          </nav>
         <nav>
           <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
             <ul class="navbar-nav  justify-content-end">
@@ -128,145 +129,111 @@
         </nav>
       </div>
     </nav>
-    <!-- End Navbar -->
-
     @if (session('success'))
-        <div class="alert alert-success text-white text-center">
-            {{ session('success') }}
-        </div>
-    @elseif (session('danger'))
-        <div class="alert alert-danger text-white text-center">
-            {{ session('danger') }}
-        </div>
-    @endif
+    <div class="alert alert-success text-white text-center">
+        {{ session('success') }}
+    </div>
+@elseif (session('danger'))
+    <div class="alert alert-danger text-white text-center">
+        {{ session('danger') }}
+    </div>
+@endif
+    <!-- End Navbar -->
     <div class="container-fluid py-4">
-      <div class="row">
-        <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
-          <div class="card">
-            <div class="card-header p-3 pt-2">
-              <div class="icon icon-lg icon-shape bg-gradient-dark shadow-dark text-center border-radius-xl mt-n4 position-absolute">
-                <i class="material-icons opacity-10">inventory</i>
-              </div>
-              <div class="text-end pt-1">
-                <p class="text-sm mb-0 text-capitalize">Total Stok</p>
-                <h4 class="mb-0">{{ $totalStock }} Boks</h4>
-              </div>
-            </div>
-            <hr class="dark horizontal my-0">
-          </div>
-        </div>
-        <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
-          <div class="card">
-            <div class="card-header p-3 pt-2">
-              <div class="icon icon-lg icon-shape bg-gradient-primary shadow-primary text-center border-radius-xl mt-n4 position-absolute">
-                <i class="material-icons opacity-10">input</i>
-              </div>
-              <div class="text-end pt-1">
-                <p class="text-sm mb-0 text-capitalize">Total Barang Masuk</p>
-                <h4 class="mb-0">{{$totalReceiveMonthly}}</h4>
-              </div>
-            </div>
-            <hr class="dark horizontal my-0">
-          </div>
-        </div>
-        <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
-          <div class="card">
-            <div class="card-header p-3 pt-2">
-              <div class="icon icon-lg icon-shape bg-gradient-success shadow-success text-center border-radius-xl mt-n4 position-absolute">
-                <i class="material-icons opacity-10">output</i>
-              </div>
-              <div class="text-end pt-1">
-                <p class="text-sm mb-0 text-capitalize">Total Barang Keluar</p>
-                <h4 class="mb-0">2500</h4>
-              </div>
-            </div>
-            <hr class="dark horizontal my-0">
-          </div>
-        </div>
-      </div>
-      <div class="container-fluid py-4">
-        <div class="row">
-          <div class="col-lg-4">
-            <div class="row">
-              <div class="card">
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h5 class="font-weight-bolder">Logo Gudang</h5>
-                </div>
-                <div class="card-body py-3 d-flex flex-row align-items-center justify-content-between">
-                    <img src="{{asset('assets/img/icons/swif_full_black.png')}}" alt="Logo" width="270px" height="auto">
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-8">
-            <div class="card h-100">
-              <div class="card-header pb-0 p-3">
+        <div class="card">
+            @foreach($shipmentjoin as $shipment)
+            @foreach($shipmentDetailJoin as $shipmentDetail)
+            @if ($shipmentDetail->shipor_id == $shipment->id)
+            <div class="card-header">
                 <div class="row">
-                  <div class="col-6 d-flex text-center">
-                    <h5 class="mb-0">Informasi Gudang</h5>
-                  </div>
+                    <img src="{{asset('assets/img/icons/swif_full_black.png')}}" alt="Warehouse Logo" class="img-fluid" style="max-height: 75px; max-width: 75px; margin-top: 10px;">
+                    <h4>{{$shipment->nama_gudang}}</h4>
+                    <h6>{{$shipment->alamat}}</h6>
+                    <div class="col-md-6">
+                        <address>
+                            Nama Staff          : {{$shipment->nama_lengkap}} <br>
+                            Nomor Telepon Staff : {{$shipment->notelp}}<br>
+                            <h5>Invoice</h5>
+                            <p>Invoice Number: {{$shipment->invoice_id}}</p>
+                            <p>Date: {{$shipment->created_at->format('F j, Y')}}</p>
+                        </address>
+                    </div>
+                    <div class="col-md-6 text-end">
+                        <h5>Dengan Penerima :</h5>
+                        <address>
+                            Nama Penerima          : {{$shipmentDetail->penerima}}<br>
+                            Nomor Telepon Penerima : {{$shipmentDetail->notelp_penerima}}<br>
+                            <h6>Alamat Penerima : {{$shipmentDetail->alamat_kirim}}</h6>
+                        </address>
+                    </div>
                 </div>
-              @foreach($dataGudang as $gudang)
-              <div class="card-body p-3 pb-0">
-                <ul class="list-group">
-                  <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
-                    <div class="d-flex flex-column">  
-                      <h6 class="mb-1 text-dark font-weight-bold text-lg">Nama Gudang</h6>
-                    </div>
-                    <div class="d-flex align-items-center text-lg">
-                      {{$gudang->nama_gudang}}
-                    </div>
-                  </li>
-                  <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
-                    <div class="d-flex flex-column">
-                      <h6 class="mb-1 text-dark font-weight-bold text-lg">Tipe Gudang</h6>
-                    </div>
-                    <div class="d-flex align-items-center text-lg">
-                      {{$gudang->tipe}}
-                    </div>
-                  </li>
-                  <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
-                    <div class="d-flex flex-column">
-                      <h6 class="mb-1 text-dark font-weight-bold text-lg">Lokasi Gudang</h6>
-                    </div>
-                    <div class="d-flex align-items-center text-lg">
-                      {{$gudang->alamat}}
-                    </div>
-                  </li>
-                  <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
-                    <div class="d-flex flex-column">
-                      <h6 class="mb-1 text-dark font-weight-bold text-lg">Nama Pemilik/Instansi</h6>
-                    </div>
-                    <div class="d-flex align-items-center text-lg">
-                      {{$gudang->nama_pemilik}}
-                    </div>
-                  </li>
-                  <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
-                    <div class="d-flex flex-column">
-                      <h6 class="mb-1 text-dark font-weight-bold text-lg">Luas Pemilik/Instansi</h6>
-                    </div>
-                    <div class="d-flex align-items-center text-lg">
-                      {{$gudang->luas}}
-                    </div>
-                  </li>
-                 @if(Auth::user()->status=='SuperAdmin')
-                  <li class="list-group-item border-0 d-flex justify-content-between ps-0 mt-4 border-radius-lg">
-                    <div class="d-flex flex-column-reverse">
-                      <a href="#" data-bs-toggle="modal" data-bs-target="#ubahGudangModal" class="btn btn-success float-end" style="margin-top:-35px;">
-                        <i class="fa fa-box"></i> Ubah Data Gudang
-                      </a>
-                    </div>
-                  </li>
-                  @endif
-                </ul>
-              </div>
-              @endforeach
             </div>
-          </div>
+            <div class="card-body"> 
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table table-bordered text-center">
+                            <thead>
+                                <tr>
+                                    <th>Deskripsi Barang</th>
+                                    <th>Kuantitas</th>
+                                    <th>Status Pengiriman</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{$shipmentDetail->merek}}</td>
+                                    <td>{{$shipmentDetail->jumlah}} Boks</td>
+                                    <td>{{$shipmentDetail->status}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <p>Terimakasih telah berbisnis dengan kami!!</p>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-      <footer class="footer py-4  ">
-        <div class="container-fluid">
+        <form action="{{ route('shipDetail.edit', $shipmentDetail->shipor_id) }}" method="POST" role="form">
+            @csrf
+            <div class="row mt-2">
+                <div class="col-md-12 mb-3">
+                    <div class="form-group">
+                        <select class="form-control" required name="status" id="status" style="border: 0.75px solid; ">
+                            <option value="{{$shipmentDetail->status}}">{{$shipmentDetail->status}}</option>
+                            <option value="Diproses">Diproses</option>
+                            <option value="Dikirim">Dikirim</option>
+                            <option value="Selesai">Selesai</option>
+                            <option value="Gagal">Gagal</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            @endif
+            @endforeach
+            @endforeach
+            <div class="row col-12">
+                <div class="col-md-9">
+                    <button class="form-control btn btn-md btn-success col-md-10" type="submit"><i class="fa fa-sync"></i> | UPDATE PROSES </button>
+                </div>
+                <div class="col-md-2">
+                    <a class="form-control btn btn-md btn-secondary col-md-2" href="/pengiriman" >
+                        <i class="fas fa-arrow-right fa-sm fa-fw mr-2 text-gray-400"></i> KEMBALI
+                    </a>
+                </div>
+                <div class="col-md-1">
+                    <a href="#" class="btn btn-info float-end" onclick="printTable()">
+                      <i class="fa fa-file-invoice mr-1"></i>
+                    </a>
+                </div>
+            </div>
+        </form>
+
+        <footer class="footer py-4  ">
+            <div class="container-fluid">
           <div class="row align-items-center justify-content-lg-between">
             <div class="col-lg-6 mb-lg-0 mb-4">
               <div class="copyright text-center text-sm text-muted text-lg-start">
@@ -284,6 +251,7 @@
       </footer>
     </div>
   </main>
+
   <div class="modal fade" id="logout" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -298,7 +266,7 @@
         </div>
         <div class="modal-footer">
           <a href="/logout" class="btn btn-outline-danger" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
-          <form id="logout-form" action="{{ route('logout') }}" method="post" style="display: none;">
+          <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
             @csrf
           </form>
         </div>
@@ -306,61 +274,6 @@
     </div>
   </div>
 
-        <!-- Modal Ubah Gudang -->
-        <div class="modal fade" id="ubahGudangModal" tabindex="-3" role="dialog" aria-labelledby="ubahGudangLabel" aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header justify-content-center">
-                <h5 class="modal-title font-weight-bolder" id="ubahGudangLabel"> Ubah Data Gudang</h5>
-              </div>
-              <div class="modal-body">
-                <form id="ubahGudang" action="{{ route('ubahGudang') }}" method="POST" role="form" id="ubahGudang">
-                  @csrf
-                  <div class="form-group">
-                    <div class="row">
-                      <div class="col-md-6">
-                        <div class="form-group input-group input-group-outline mb-">
-                          <label for="example-text-input" class="form-label">Nama Gudang</label>
-                          <input class="form-control" required autocomplete="off" type="text" name="nama_gudang">
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="form-group input-group input-group-outline mb-">
-                          <label for="example-text-input" class="form-label">Tipe Gudang</label>
-                          <input class="form-control" required autocomplete="on" type="text" name="tipe">
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row mt-2 mb-4">
-                    <div class="col-md-6">
-                      <div class="form-group input-group input-group-outline mb-">
-                        <label for="example-text-input" class="form-label">Alamat Gudang</label>
-                        <input class="form-control" required autocomplete="off" type="text" name="alamat">
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="form-group input-group input-group-outline mb-">
-                        <label for="example-text-input" class="form-label">Nama Pemilik</label>
-                        <input class="form-control" required autocomplete="off" type="text" name="nama_pemilik">
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="form-group input-group input-group-outline mb-">
-                        <label for="example-text-input" class="form-label">Luas Gudang</label>
-                        <input class="form-control" required autocomplete="off" type="text" name="luas">
-                      </div>
-                    </div>
-                  </div>
-                  <div class="modal-footer">  
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-success"><i class="fa fa-pen"></i> Tambah</button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
   <div class="fixed-plugin">
     <a class="fixed-plugin-button text-dark position-fixed px-3 py-2">
       <i class="material-icons py-2">settings</i>
@@ -414,8 +327,15 @@
   <script src="{{asset('assets/js/core/bootstrap.min.js')}}"></script>
   <script src="{{asset('assets/js/plugins/perfect-scrollbar.min.js')}}"></script>
   <script src="{{asset('assets/js/plugins/smooth-scrollbar.min.js')}}"></script>
-  <script src="{{asset('assets/js/plugins/chartjs.min.js')}}"></script>
+  <script src="{{asset('assets/js/plugins/chartjs.min.js')}}"></script>>
+  <script src="{{asset('assets/js/jquery.min.js')}}"></script>
+  <script src="{{asset('assets/js/jquery.dataTables.min.js')}}"></script>
+  <script src="{{asset('assets/js/select2.min.js')}}"></script>
   <script>
+    function printTable() {
+        window.print();
+    }
+    // In your Javascript (external .js resource or <script> tag)
     var win = navigator.platform.indexOf('Win') > -1;
     if (win && document.querySelector('#sidenav-scrollbar')) {
       var options = {

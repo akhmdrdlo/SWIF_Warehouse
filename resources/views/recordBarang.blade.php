@@ -74,7 +74,7 @@
           </a>
         </li>
         <li class="nav-item mt-3">
-          <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account pages</h6>
+          <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Jendela Akun</h6>
         </li>
         <li class="nav-item">
           <a class="nav-link text-white " href="#" data-bs-toggle="modal" data-bs-target="#logout">
@@ -154,7 +154,7 @@
               <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3 px-4">
                 <h6 class="text-white text-capitalize ps-3">Histori Barang</h6>
                 @if (session('id'))
-                <a href="#" class="btn btn-info float-end mx-2" style="margin-top:-35px;">
+                <a href="#" class="btn btn-info float-end mx-2" style="margin-top:-35px;" onclick="printTable()">
                   <i class="fa fa-file-invoice mr-1"></i>
                 </a>
                 @endif
@@ -168,7 +168,6 @@
                       <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">No</th>
                       <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Merek Barang</th>
                       <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">Kategori</th>
-                      <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Nama Supplier</th>
                       <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Username Aksi</th>
                       <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Stok Terubah</th>
                       <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ">Proses</th>
@@ -188,9 +187,6 @@
                       </td>
                       <td>
                         <p class="text-xs text-uppercase font-weight-bold mb-0">{{$log->kategori}}</p>
-                      </td>
-                      <td class="align-middle text-center text-xs">
-                        <p class="text-xs font-weight-bold mb-0">{{$log->supplier}}</p>
                       </td>
                       <td class="align-middle text-center">
                         <span class="text-secondary text-xs font-weight-bold">{{$log->uname}}</span>
@@ -313,6 +309,9 @@
   <script src="{{asset('assets/js/jquery.min.js')}}"></script>
   <script src="{{asset('assets/js/jquery.dataTables.min.js')}}"></script>
   <script>
+    function printTable() {
+        window.print();
+    }
     var win = navigator.platform.indexOf('Win') > -1;
     if (win && document.querySelector('#sidenav-scrollbar')) {
       var options = {

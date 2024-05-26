@@ -42,3 +42,6 @@ Route::delete('/historiBarang/{id}', [App\Http\Controllers\Auth\BarangController
 Route::get('/pengiriman', [App\Http\Controllers\Auth\ShipmentController::class, 'index']);
 Route::get('/addShipmentView', [App\Http\Controllers\Auth\ShipmentController::class, 'create']);
 Route::post('/addShipment', [App\Http\Controllers\Auth\ShipmentController::class, 'store']);
+Route::get('/shipmentDetail/{id}', [App\Http\Controllers\Auth\ShipmentController::class, 'show'])->name('shipDetail.show');
+Route::post('/shipmentEdit/{id}', [App\Http\Controllers\Auth\ShipmentController::class, 'edit'])->name('shipDetail.edit');
+

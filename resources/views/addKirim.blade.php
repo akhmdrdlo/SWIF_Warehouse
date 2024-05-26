@@ -75,7 +75,7 @@
           </a>
         </li>
         <li class="nav-item mt-3">
-          <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account pages</h6>
+          <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Jendela Akun</h6>
         </li>
         <li class="nav-item">
           <a class="nav-link text-white " href="#" data-bs-toggle="modal" data-bs-target="#logout">
@@ -97,9 +97,9 @@
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
             <li class="breadcrumb-item text-sm"><a class="opacity-5 text-white" href="javascript:;">Halaman</a></li>
-            <li class="breadcrumb-item text-sm text-white active" aria-current="page">Pengelola Barang</li>
+            <li class="breadcrumb-item text-sm text-white active" aria-current="page">Pengelola Peniriman</li>
           </ol>
-          <h6 class="font-weight-bolder mb-0 text-white">Tabel Barang</h6>
+          <h6 class="font-weight-bolder mb-0 text-white">Tambah Pengiriman</h6>
         </nav>
         <nav>
           <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">

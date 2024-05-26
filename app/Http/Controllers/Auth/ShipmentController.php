@@ -22,12 +22,25 @@ class ShipmentController extends Controller
     {
         $shipmentjoin = Shipment::join('users', 'users.id','=','shipment.staff_id')
         ->join('gudang', 'gudang.id','=','shipment.gdg_id')
-        ->get(['users.nama_lengkap','shipment.invoice_id','gudang.nama_gudang','gudang.alamat']);
+        ->get(['users.nama_lengkap','shipment.id','shipment.invoice_id','gudang.nama_gudang','gudang.alamat']);
 
         $shipmentDetailJoin = ShipmentDetail::join('shipment','shipment.id','=','shipmentdetails.shipor_id')
         ->join('barangs', 'barangs.id', '=', 'shipmentdetails.brg_id')
-        ->get(['barangs.merek','shipmentdetails.jumlah','shipmentdetails.penerima','shipmentdetails.notelp_penerima','shipmentdetails.alamat_kirim','shipmentdetails.status']);
+        ->get(['barangs.merek','shipmentdetails.shipor_id','shipmentdetails.jumlah','shipmentdetails.penerima','shipmentdetails.notelp_penerima','shipmentdetails.alamat_kirim','shipmentdetails.status']);
         return view ('shipment', compact('shipmentjoin','shipmentDetailJoin'));
+    }
+
+    public function show($id){
+        $shipment = Shipment::findOrFail($id);
+        $shipmentjoin = Shipment::join('users', 'users.id','=','shipment.staff_id')
+        ->join('gudang', 'gudang.id','=','shipment.gdg_id')
+        ->get(['users.nama_lengkap','users.notelp','shipment.id','shipment.invoice_id','shipment.created_at','gudang.nama_gudang','gudang.alamat']);
+
+        $shipmentDetailJoin = ShipmentDetail::where('shipor_id', $id)
+        ->join('shipment','shipment.id','=','shipmentdetails.shipor_id')
+        ->join('barangs', 'barangs.id', '=', 'shipmentdetails.brg_id')
+        ->get(['barangs.merek','shipmentdetails.shipor_id','shipmentdetails.jumlah','shipmentdetails.penerima','shipmentdetails.notelp_penerima','shipmentdetails.alamat_kirim','shipmentdetails.status']);
+        return view ('detailShipment', compact('shipment','shipmentjoin','shipmentDetailJoin'));
     }
 
     /**
@@ -68,6 +81,8 @@ class ShipmentController extends Controller
        
            return $invoiceID;
        }
+       
+
         try {
             $autoInvoiceID = generateInvoiceID();
             $validatedData = $request->validate([
@@ -77,6 +92,7 @@ class ShipmentController extends Controller
                 'notelp_penerima' => 'required',
                 'alamat_kirim' => 'required',
             ]);
+
             $stf_id = user::where('uname', '=', Auth::user()->uname)->first()->id ?? null;
             
             $pengiriman = new shipment;
@@ -85,6 +101,7 @@ class ShipmentController extends Controller
             $pengiriman->staff_id = $stf_id;
             $pengiriman->save();
             
+
             $detailKirim = new shipmentdetail();
             $detailKirim->shipor_id = $pengiriman->id;
             $detailKirim->brg_id = $request->input('brg_id');
@@ -92,7 +109,7 @@ class ShipmentController extends Controller
             $detailKirim->notelp_penerima = $request->input('notelp_penerima');
             $detailKirim->alamat_kirim = $request->input('alamat_kirim');
             $detailKirim->jumlah = $request->input('jumlah');
-            $detailKirim->status = 'Sedang Dipersiapkan';
+            $detailKirim->status = 'Diproses';
             $detailKirim->save();
     
             return redirect('/pengiriman')->with('success', 'Data Pengiriman berhasil ditambahkan!!');
@@ -101,16 +118,15 @@ class ShipmentController extends Controller
         }
     }
 
+
+    
+
     /**
      * Display the specified resource.
      *
      * @param  \App\Models\shipment  $shipment
      * @return \Illuminate\Http\Response
      */
-    public function show(shipment $shipment)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -118,9 +134,13 @@ class ShipmentController extends Controller
      * @param  \App\Models\shipment  $shipment
      * @return \Illuminate\Http\Response
      */
-    public function edit(shipment $shipment)
+    public function edit(Request $request, $id)
     {
-        //
+        $detailKirim = shipmentdetail::findOrFail($id);
+        $detailKirim->status = $request->status;
+        $detailKirim->save();
+
+        return redirect('/pengiriman')->with('success', 'Status berhasil diperbarui!!');
     }
 
     /**
