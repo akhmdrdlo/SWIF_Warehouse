@@ -7,6 +7,7 @@ use App\Models\Barang;
 use App\Models\kategori;
 use App\Models\User;
 use App\Models\Gudang;
+use App\Models\shipmentdetail;
 use Carbon\Carbon;
 
 class IntegratedController extends Controller
@@ -34,6 +35,17 @@ class IntegratedController extends Controller
         return $barangMasukBulan;
     }
    
+    public function getTotalPutawayMonthly()
+    {
+        $startDate = $this->getStartDateFromUserCalendar(); // Dapatkan start_date
+        $endDate = $this->getEndDateFromUserCalendar(); // Dapatkan end_date
+    
+        // Hitung jumlah barang masuk dalam rentang waktu
+        $barangKeluarBulan = shipmentdetail::whereBetween('created_at', [$startDate, $endDate])
+            ->sum('jumlah');
+        return $barangKeluarBulan;
+    }
+
     public function getTotalStok()
     {
     $totalStock = Barang::sum('stok');
@@ -53,8 +65,9 @@ class IntegratedController extends Controller
         $dataGudang = gudang::all();
         $totalStock = $this->getTotalStok();
         $totalReceiveMonthly = $this->getTotalReceiveMonthly();
+        $totalPutawayMonthly = $this->getTotalPutawayMonthly();
         // $kategoriAll = $this->getTotalKategori();
-        return view('/dashboard', compact('dataGudang','totalStock','totalReceiveMonthly'));
+        return view('/dashboard', compact('dataGudang','totalStock','totalReceiveMonthly','totalPutawayMonthly'));
     }
 
     /**
