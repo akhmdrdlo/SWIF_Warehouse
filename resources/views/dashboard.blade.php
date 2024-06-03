@@ -34,7 +34,7 @@
       <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
       <a class="navbar-brand m-0" href=" https://demos.creative-tim.com/material-dashboard/pages/dashboard " target="_blank">
         <img src="{{asset('assets/img/icons/swif_logo.png')}}" class="navbar-brand-img h-100" alt="main_logo">
-        <span class="ms-1 font-weight-bold text-white">SWIF Menu</span>
+        <span class="ms-1 font-weight-bold text-white">Menu SWIF</span>
       </a>
     </div>
     <hr class="horizontal light mt-0 mb-2">
@@ -45,7 +45,7 @@
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">dashboard</i>
             </div>
-            <span class="nav-link-text ms-1">Dashboard</span>
+            <span class="nav-link-text ms-1">Menu Utama</span>
           </a>
         </li>
         <li class="nav-item">
@@ -61,7 +61,7 @@
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">watch</i>
             </div>
-            <span class="nav-link-text ms-1">Record Data</span>
+            <span class="nav-link-text ms-1">Riwayat Barang</span>
           </a>
         </li>
         <li class="nav-item">
@@ -81,7 +81,7 @@
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">logout</i>
             </div>
-            <span class="nav-link-text ms-1">Log Out</span>
+            <span class="nav-link-text ms-1">Keluar</span>
           </a>
         </li>
       </ul>
@@ -163,7 +163,7 @@
               </div>
               <div class="text-end pt-1">
                 <p class="text-sm mb-0 text-capitalize">Total Barang Masuk</p>
-                <h4 class="mb-0">{{$totalReceiveMonthly}} Boks</h4>
+                <h4 class="mb-0">{{$totalReceiveMonthly}} Boks/Bulan Ini</h4>
               </div>
             </div>
             <hr class="dark horizontal my-0">
@@ -177,7 +177,7 @@
               </div>
               <div class="text-end pt-1">
                 <p class="text-sm mb-0 text-capitalize">Total Barang Keluar</p>
-                <h4 class="mb-0">{{$totalPutawayMonthly}} Boks</h4>
+                <h4 class="mb-0">{{$totalPutawayMonthly}} Boks/Bulan Ini</h4>
               </div>
             </div>
             <hr class="dark horizontal my-0">

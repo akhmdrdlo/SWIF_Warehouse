@@ -9,6 +9,7 @@ use App\Models\Barang;
 use App\Models\user;
 use App\Models\shipment;
 use App\Models\shipmentdetail;
+use App\Models\record;
 
 
 class ShipmentController extends Controller
@@ -99,8 +100,7 @@ class ShipmentController extends Controller
             $pengiriman->invoice_id = $autoInvoiceID;
             $pengiriman->gdg_id = '1';
             $pengiriman->staff_id = $stf_id;
-            $pengiriman->save();
-            
+            $pengiriman->save();           
 
             $detailKirim = new shipmentdetail();
             $detailKirim->shipor_id = $pengiriman->id;
@@ -111,7 +111,17 @@ class ShipmentController extends Controller
             $detailKirim->jumlah = $request->input('jumlah');
             $detailKirim->status = 'Diproses';
             $detailKirim->save();
-    
+
+            $barang = Barang::findOrFail($detailKirim->id);
+            $records = new record();
+            $records->brg_id = $barang->id;
+            $records->kat_id = $barang->kat_id;
+            $records->uname = Auth::user()->uname;
+            $records->supplier = $barang->supplier;
+            $records->stok = '-'.$detailKirim->jumlah;
+            $records->proses = "KIRIM BARANG";
+            $records->save();
+
             return redirect('/pengiriman')->with('success', 'Data Pengiriman berhasil ditambahkan!!');
         } catch (\Exception $e) {
             return redirect('/pengiriman')->with('error', 'Gagal menyimpan data! Silahkan coba lagi.');

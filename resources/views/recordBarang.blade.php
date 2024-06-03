@@ -35,34 +35,34 @@
       <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
       <a class="navbar-brand m-0" href=" https://demos.creative-tim.com/material-dashboard/pages/dashboard " target="_blank">
         <img src="{{asset('assets/img/icons/swif_logo.png')}}" class="navbar-brand-img h-100" alt="main_logo">
-        <span class="ms-1 font-weight-bold text-white">SWIF Menu</span>
+        <span class="ms-1 font-weight-bold text-white">Menu SWIF</span>
       </a>
     </div>
     <hr class="horizontal light mt-0 mb-2">
     <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link text-white " href="/menu">
+          <a class="nav-link text-white" href="/menu">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">dashboard</i>
             </div>
-            <span class="nav-link-text ms-1">Dashboard</span>
+            <span class="nav-link-text ms-1">Menu Utama</span>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="/barang">
+          <a class="nav-link text-white" href="/barang">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">table_view</i>
             </div>
             <span class="nav-link-text ms-1">Tabel Barang</span>
           </a>
         </li>
-        <li class="nav-item ">
+        <li class="nav-item">
           <a class="nav-link text-white active bg-gradient-primary" href="/historiBarang">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">watch</i>
             </div>
-            <span class="nav-link-text ms-1">Record Data</span>
+            <span class="nav-link-text ms-1">Riwayat Barang</span>
           </a>
         </li>
         <li class="nav-item">
@@ -76,12 +76,13 @@
         <li class="nav-item mt-3">
           <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Jendela Akun</h6>
         </li>
+
         <li class="nav-item">
           <a class="nav-link text-white " href="#" data-bs-toggle="modal" data-bs-target="#logout">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">logout</i>
             </div>
-            <span class="nav-link-text ms-1">Log Out</span>
+            <span class="nav-link-text ms-1">Keluar</span>
           </a>
         </li>
       </ul>
@@ -198,7 +199,11 @@
                         <span class="text-secondary text-xs font-weight-bold">{{$log->proses}}</span>
                       </td>
                       <td class="align-middle text-center">
-                        <span class="text-secondary text-xs font-weight-bold">{{$log->updated_at->format('Y/m/d H:i:s')}}</span>
+                        @if($log->proses == "KIRIM BARANG")
+                          <span class="text-secondary text-xs font-weight-bold">Buka Halaman 'Pengiriman Barang'</span>
+                        @else
+                          <span class="text-secondary text-xs font-weight-bold">{{$log->updated_at->format('Y/m/d H:i:s')}}</span>
+                        @endif
                       </td>
                     </tr>
                     @endforeach

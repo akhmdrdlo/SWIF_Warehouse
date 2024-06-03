@@ -35,22 +35,22 @@
       <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
       <a class="navbar-brand m-0" href=" https://demos.creative-tim.com/material-dashboard/pages/dashboard " target="_blank">
         <img src="{{asset('assets/img/icons/swif_logo.png')}}" class="navbar-brand-img h-100" alt="main_logo">
-        <span class="ms-1 font-weight-bold text-white">SWIF Menu</span>
+        <span class="ms-1 font-weight-bold text-white">Menu SWIF</span>
       </a>
     </div>
     <hr class="horizontal light mt-0 mb-2">
     <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link text-white " href="/menu">
+          <a class="nav-link text-white" href="/menu">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">dashboard</i>
             </div>
-            <span class="nav-link-text ms-1">Dashboard</span>
+            <span class="nav-link-text ms-1">Menu Utama</span>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white" href="/barang">
+          <a class="nav-link text-white " href="/barang">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">table_view</i>
             </div>
@@ -62,7 +62,7 @@
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">watch</i>
             </div>
-            <span class="nav-link-text ms-1">Record Data</span>
+            <span class="nav-link-text ms-1">Riwayat Barang</span>
           </a>
         </li>
         <li class="nav-item">
@@ -76,12 +76,13 @@
         <li class="nav-item mt-3">
           <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Jendela Akun</h6>
         </li>
+
         <li class="nav-item">
           <a class="nav-link text-white " href="#" data-bs-toggle="modal" data-bs-target="#logout">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">logout</i>
             </div>
-            <span class="nav-link-text ms-1">Log Out</span>
+            <span class="nav-link-text ms-1">Keluar</span>
           </a>
         </li>
       </ul>
@@ -166,7 +167,7 @@
                   <thead>
                     <tr>
                       <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">No</th>
-                      <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Invoice Order</th>
+                      <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Invoice Pesanan</th>
                       <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Merek Barang</th>
                       <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">Jumlah</th>
                       <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Instansi Penerima</th>
@@ -201,26 +202,21 @@
                       <td class="align-middle text-center">
                         <span class="text-secondary text-xs font-weight-bold">{{$shipmentDetail->alamat_kirim}}</span>
                       </td>
-                      <td class="align-middle text-center">
-                        <span class="text-xs font-weight-bold text-white badge badge-sm
-                        @if ($shipmentDetail->status == "Diproses"){
-                          bg-secondary
-                        }@elseif ($shipmentDetail->status == "Dikirim"){
-                          bg-info
-                        }@elseif ($shipmentDetail->status == "Selesai"){
-                          bg-success
-                        }@elseif ($shipmentDetail->status == "Gagal"){
-                          bg-danger
-                        } 
+                      <td class="align-middle text-center"> 
+                        @if ($shipmentDetail->status == "Diproses")
+                          <span class="text-xs font-weight-bold text-white badge badge-sm bg-secondary"><i class="fa fa-sync"></i> 
+                        @elseif ($shipmentDetail->status == "Dikirim")
+                          <span class="text-xs font-weight-bold text-white badge badge-sm bg-info"><i class="fa fa-truck"></i> 
+                        @elseif ($shipmentDetail->status == "Selesai")
+                          <span class="text-xs font-weight-bold text-white badge badge-sm bg-success"><i class="fa fa-check"></i> 
+                        @elseif ($shipmentDetail->status == "Gagal")
+                          <span class="text-xs font-weight-bold text-white badge badge-sm bg-danger"><i class="fa fa-times"></i> 
                         @endif
-                        ">{{$shipmentDetail->status}}</span>
+                        {{$shipmentDetail->status}}</span>
                       </td>
                       <td class="align-middle text-center">
                         <a href="{{ route('shipDetail.show', $shipment->id) }}" class="text-secondary font-weight-bold text-lg">
                           <span class="badge badge-lg bg-info"><i class="fa fa-info"></i></span>
-                        </a>
-                        <a href="{{ route('shipDetail.edit', $shipment->id) }}" class="text-secondary font-weight-bold text-lg">
-                          <span class="badge badge-lg bg-warning"><i class="fa fa-truck-pickup"></i></span>
                         </a>
                       </td>
                     </tr>

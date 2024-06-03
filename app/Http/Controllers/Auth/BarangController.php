@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use App\Models\barang;
 use App\Models\record;
 use App\Models\kategori;
@@ -24,16 +25,19 @@ class BarangController extends Controller
     }
     
     public function store(Request $request){
-        try {
-            $kategori_id = kategori::where('kategori', $request->kategori)->value('id');
-            $validatedData = $request->validate([
-                'kat_id' => 'required|numeric',
-                'merek' => 'required',
-                'supplier' => 'required',
-                'stok' => 'required|numeric',
-                'lokasi' => 'required',
-            ]);
-    
+        $kategori_id = kategori::where('kategori', $request->kategori)->value('id');
+        $validatedData = $request->validate([
+            'kat_id' => 'required|numeric',
+            'merek' => 'required',
+            'supplier' => 'required',
+            'stok' => 'required|numeric',
+            'lokasi' => 'required',
+        ]);
+        $cekBarang = Barang::where(Str::upper('merek'), Str::upper($request->merek))
+        ->where(Str::upper('supplier'), Str::upper($request->supplier))->first();
+        if($cekBarang){
+            return redirect('/barang')->with('danger', 'Merek dan Supplier sudah ada, Silahkan gunakan Search dan edit barang dengan nama yang sama!!');
+        }else if(!$cekBarang){
             $barang = new barang;
             $barang->kat_id = $request->input('kat_id');
             $barang->merek = $request->input('merek');
@@ -41,7 +45,7 @@ class BarangController extends Controller
             $barang->stok = $request->input('stok');
             $barang->lokasi = $request->input('lokasi');
             $barang->save();
-
+    
             $records = new record();
             $records->brg_id =$barang->id;
             $records->kat_id = $request->input('kat_id');
@@ -50,10 +54,8 @@ class BarangController extends Controller
             $records->stok = '+'.$request->input('stok');
             $records->proses = "TAMBAH STOK";
             $records->save();
-    
+        
             return redirect('/barang')->with('success', 'Data Barang berhasil ditambahkan!!');
-        } catch (\Exception $e) {
-            return redirect('/barang')->with('error', 'Gagal menyimpan data! Silahkan coba lagi.');
         }
     }
 
@@ -110,58 +112,62 @@ class BarangController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $barang = Barang::findOrFail($id);
-        if($barang->stok >= $request->stok){
-            $stok = $barang->stok - $request->stok;
-            $finalstok = '-'.$stok;
-        }else if($barang->stok <= $request->stok){
-            $stok = $request->stok - $barang->stok;
-            $finalstok = '+'.$stok;
-        }
+        try{
+            $barang = Barang::findOrFail($id);
+            if($barang->stok >= $request->stok){
+                $stok = $barang->stok - $request->stok;
+                $finalstok = '-'.$stok;
+            }else if($barang->stok <= $request->stok){
+                $stok = $request->stok - $barang->stok;
+                $finalstok = '+'.$stok;
+            }
 
-        $merek = $barang->merek;
-        $supplier = $barang->supplier;
-        $stok = $barang->stok;
-    
-        $requestMerek = $request->merek;
-        $requestSupplier = $request->supplier;
-        $requestStok = $request->stok;
-    
-        $prosesAkhir = "";
-    
-        // Check if merek has changed
-        if ($supplier == $requestSupplier && $merek != $requestMerek && $stok == $requestStok) {
-            $prosesAkhir = "UPDATE MEREK";
-        }
-    
-        // Check if supplier has changed
-        if ($supplier != $requestSupplier && $merek == $requestMerek && $stok == $requestStok) {
-            $prosesAkhir .= "UPDATE SUPPLIER";
-        }
-    
-        // Check if stok has changed
-        if ($supplier == $requestSupplier && $merek == $requestMerek && $stok != $requestStok) {
-            $prosesAkhir .= "UPDATE STOK";
-        }
-
-        $barang->merek = $request->merek;
-        $barang->supplier = $request->supplier;
-        $barang->kat_id = $request->kat_id;
-        $barang->stok = $request->stok;
-        $barang->lokasi = $request->lokasi;
-        $barang->save();
-
-        $records = new record();
-        $records->brg_id = $barang->id;
-        $records->kat_id = $barang->kat_id;
-        $records->uname = Auth::user()->uname;
-        $records->supplier = $barang->supplier;
-        $records->stok = $finalstok;
-        $records->proses = $prosesAkhir;
-        $records->save();
+            $merek = $barang->merek;
+            $supplier = $barang->supplier;
+            $stok = $barang->stok;
         
-        //bila berhasil diubah, kembali ke page barang dan munculkan alert
-        return redirect('/barang')->with('success', 'Data Barang berhasil diubah!!');
+            $requestMerek = $request->merek;
+            $requestSupplier = $request->supplier;
+            $requestStok = $request->stok;
+        
+            $prosesAkhir = "";
+        
+            // Check if merek has changed
+            if ($supplier == $requestSupplier && $merek != $requestMerek && $stok == $requestStok) {
+                $prosesAkhir = "UPDATE MEREK";
+            }
+        
+            // Check if supplier has changed
+            if ($supplier != $requestSupplier && $merek == $requestMerek && $stok == $requestStok) {
+                $prosesAkhir .= "UPDATE SUPPLIER";
+            }
+        
+            // Check if stok has changed
+            if ($supplier == $requestSupplier && $merek == $requestMerek && $stok != $requestStok) {
+                $prosesAkhir .= "UPDATE STOK";
+            }
+
+            $barang->merek = $request->merek;
+            $barang->supplier = $request->supplier;
+            $barang->kat_id = $request->kat_id;
+            $barang->stok = $request->stok;
+            $barang->lokasi = $request->lokasi;
+            $barang->save();
+
+            $records = new record();
+            $records->brg_id = $barang->id;
+            $records->kat_id = $barang->kat_id;
+            $records->uname = Auth::user()->uname;
+            $records->supplier = $barang->supplier;
+            $records->stok = $finalstok;
+            $records->proses = $prosesAkhir;
+            $records->save();
+            
+            //bila berhasil diubah, kembali ke page barang dan munculkan alert
+            return redirect('/barang')->with('success', 'Data Barang berhasil diubah!!');
+        }catch(\Exception $e){
+            return redirect('/barang')->with('danger', 'Data Barang gagal ditambahkan!!');
+        }
     }
 
     public function tampilRecord(){
