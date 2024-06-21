@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Auth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\User;
@@ -11,20 +12,10 @@ class RegisterController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        return view('/daftar');
-    }
-
     public function indexAdmn()
     {
         $admin = User::all();
         return view('/admin', compact('admin'));
-    }
-
-    public function create()
-    {
-        return view('signup');
     }
 
     public function store(Request $request)
@@ -32,21 +23,23 @@ class RegisterController extends Controller
         $validatedData = $request->validate([
             'uname' => 'required',
             'password' => 'required',
+            'notelp' => 'required',
         ]);
 
         $ifDuplicate = $request->input('uname');
         $user = User::where('uname', $ifDuplicate)->first();
         if($user){
-            return redirect('/daftarAdmin')->with('danger', 'Akun '.$request->input('uname').' sudah terpakai!! Coba username');
+            return redirect('/admin')->with('danger', 'Akun '.$request->input('uname').' sudah terpakai!! Coba username yang lain!!');
         }else{
             $user = new User;
             $user->uname = $ifDuplicate;
             $user->password = bcrypt($request->input('password'));
             $user->nama_lengkap = $request->input('nama_lengkap');
-            $user->status = $request->input('status');
+            $user->notelp = $request->input('notelp');
+            $user->status ="Admin";
             $user->save();
     
-            return redirect('/signin')->with('success', 'Akun '.$request->input('nama_lengkap').' berhasil dibuat! Silakan login untuk melanjutkan.');
+            return redirect('/admin')->with('success', 'Akun '.$request->input('nama_lengkap').' berhasil dibuat! Silakan login untuk melanjutkan.');
         }
 
     }   
@@ -70,8 +63,8 @@ class RegisterController extends Controller
      */
     public function edit($id)
     {
-        // $admin = User::findOrFail($id); //mencari admin dengan id yang sesuai atau menampilkan 404 jika tidak ditemukan  
-        // return view('', compact('admin'));
+        $admin = User::findOrFail($id); //mencari admin dengan id yang sesuai atau menampilkan 404 jika tidak ditemukan  
+        return view('updateAdmin', compact('admin'));
     }
 
     /**
@@ -83,20 +76,23 @@ class RegisterController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // $admin = User::findOrFail($id);
-        // //tarik data yang diinput user dan ubah data di database dengan inputan user tadi
-        // $admin->uname = $request->uname;
-        // $admin->nama_lengkap = $request->nama_lengkap;
-        // $admin->status = $request->status;
-        // $admin->password = bcrypt($request->input('password'));
-        // $admin->save();
+        $admin = User::findOrFail($id);
+        //tarik data yang diinput user dan ubah data di database dengan inputan user tadi
+        $admin->uname = $request->uname;
+        $admin->nama_lengkap = $request->nama_lengkap;
+        $admin->notelp = $request->notelp;
+        $admin->status = $request->status;
+        if ($request->password) { // Check if password field is filled
+            $admin->password = bcrypt($request->password); // Hash the new password
+        }
+        $admin->save();
         
-        // if($id==Auth::user()->id){
-        //     return redirect('/admin')->with('success', 'Data diri kamu berhasil diubah!!');
-        // }else{
-        //     //bila berhasil diubah, kembali ke page barang dan munculkan alert
-        //     return redirect('/admin')->with('success', 'Data Admin berhasil diubah!!');
-        // }
+        if($id==Auth::user()->id){
+            return redirect('/admin')->with('success', 'Data diri kamu berhasil diubah!!');
+        }else{
+            //bila berhasil diubah, kembali ke page barang dan munculkan alert
+            return redirect('/admin')->with('success', 'Data Admin berhasil diubah!!');
+        }
     }
 
     /**

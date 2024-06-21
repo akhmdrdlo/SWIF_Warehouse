@@ -27,6 +27,7 @@
 </head>
 
 <body class="g-sidenav-show  bg-gray-200">
+  @if(Auth::check())
   <div class="position-absolute w-100 min-height-300 top-0" style="background-image: url('../assets/img/gudang2.jpeg'); background-position-y: 50%; background-position:center;">
     <span class="mask bg-primary opacity-6"></span>
   </div>
@@ -76,7 +77,14 @@
         <li class="nav-item mt-3">
           <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Jendela Akun</h6>
         </li>
-
+        <li class="nav-item">
+          <a class="nav-link text-white " href="/admin">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">person</i>
+            </div>
+            <span class="nav-link-text ms-1">Data Staf</span>
+          </a>
+        </li>
         <li class="nav-item">
           <a class="nav-link text-white " href="#" data-bs-toggle="modal" data-bs-target="#logout">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -167,12 +175,13 @@
                   <thead>
                     <tr>
                       <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">No</th>
-                      <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Invoice Pesanan</th>
-                      <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Merek Barang</th>
+                      <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Invoice</th>
+                      <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Merek</th>
                       <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">Jumlah</th>
+                      <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Staf</th>
                       <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Instansi Penerima</th>
                       <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Alamat Penerima</th>
-                      <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ">Proses Pengiriman</th>
+                      <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ">Proses</th>
                       <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ">Detail</th>
 
                     </tr>
@@ -195,6 +204,9 @@
                       </td>
                       <td class="align-middle text-center text-xs">
                         <p class="text-xs font-weight-bold mb-0">{{$shipmentDetail->jumlah}}</p>
+                      </td>
+                      <td class="align-middle text-center text-xs">
+                        <p class="text-xs font-weight-bold mb-0">{{$shipment->nama_lengkap}}</p>
                       </td>
                       <td class="align-middle text-center">
                         <span class="text-secondary text-xs font-weight-bold">{{$shipmentDetail->penerima}}</span>
@@ -273,7 +285,22 @@
       </div>
     </div>
   </div>
-
+  @elseif(!Auth::check())
+  <div class="container mt-8">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-header text-center">Error 401 - Unauthorized User</div>
+          <div class="card-body text-center">
+            <h3><i class="fas fa-times-circle text-danger"></i><br>ERROR 401</h3>
+            <h3>Oops! Anda tidak memiliki izin untuk mengakses halaman ini.</h3>
+            <h6><a href="/login" class="text-primary">Login </a>sebagai admin untuk mendapatkan izin ke halaman ini!!</h6>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  @endif
   <div class="fixed-plugin">
     <a class="fixed-plugin-button text-dark position-fixed px-3 py-2">
       <i class="material-icons py-2">settings</i>
@@ -339,7 +366,8 @@
       Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
     }
     $(document).ready(function(){
-      $("#tabel").DataTable();
+      $("#tabel").DataTable({
+      });
     });
   </script>
   <!-- Github buttons -->

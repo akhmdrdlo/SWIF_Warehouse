@@ -20,12 +20,14 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
   <!-- CSS Files -->
   <link id="pagestyle" href="{{asset('assets/css/material-dashboard.css?v=3.1.0')}}" rel="stylesheet" />
+  <link rel="stylesheet" href="{{asset('assets/css/jquery.dataTables.min.css')}}">
   <!-- Nepcha Analytics (nepcha.com) -->
   <!-- Nepcha is a easy-to-use web analytics. No cookies and fully compliant with GDPR, CCPA and PECR. -->
   <script defer data-site="YOUR_DOMAIN_HERE" src="https://api.nepcha.com/js/nepcha-analytics.js"></script>
 </head>
 
 <body class="g-sidenav-show  bg-gray-200">
+  @if(Auth::check())
   <div class="position-absolute w-100 min-height-300 top-0" style="background-image: url('../assets/img/gudang2.jpeg'); background-position-y: 50%; background-position:center;">
     <span class="mask bg-primary opacity-6"></span>
   </div>
@@ -41,7 +43,7 @@
     <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link text-white active bg-gradient-primary" href="/menu">
+          <a class="nav-link text-white" href="/menu">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">dashboard</i>
             </div>
@@ -76,7 +78,7 @@
           <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Jendela Akun</h6>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="/admin">
+          <a class="nav-link text-white active bg-gradient-primary" href="/admin">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">person</i>
             </div>
@@ -103,9 +105,9 @@
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
             <li class="breadcrumb-item text-sm"><a class="opacity-5 text-white" href="javascript:;">Halaman</a></li>
-            <li class="breadcrumb-item text-sm text-white active" aria-current="page">Menu Utama</li>
+            <li class="breadcrumb-item text-sm text-white active" aria-current="page">Pengelola Admin</li>
           </ol>
-          <h6 class="font-weight-bolder mb-0 text-white">Menu Utama</h6>
+          <h6 class="font-weight-bolder mb-0 text-white">Tabel Admin</h6>
         </nav>
         <nav>
           <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
@@ -136,140 +138,87 @@
       </div>
     </nav>
     <!-- End Navbar -->
-
-    @if (session('success'))
-        <div class="alert alert-success text-white text-center">
-            {{ session('success') }}
-        </div>
-    @elseif (session('danger'))
-        <div class="alert alert-danger text-white text-center">
-            {{ session('danger') }}
-        </div>
-    @endif
     <div class="container-fluid py-4">
       <div class="row">
-        <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
-          <div class="card">
-            <div class="card-header p-3 pt-2">
-              <div class="icon icon-lg icon-shape bg-gradient-dark shadow-dark text-center border-radius-xl mt-n4 position-absolute">
-                <i class="material-icons opacity-10">inventory</i>
-              </div>
-              <div class="text-end pt-1">
-                <p class="text-sm mb-0 text-capitalize">Total Stok</p>
-                <h4 class="mb-0">{{ $totalStock }} Boks</h4>
-              </div>
-            </div>
-            <hr class="dark horizontal my-0">
+        <div class="col-12">
+          @if (session('success'))
+          <div class="alert alert-success text-white m-3">
+              {{ session('success') }}
           </div>
-        </div>
-        <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
-          <div class="card">
-            <div class="card-header p-3 pt-2">
-              <div class="icon icon-lg icon-shape bg-gradient-primary shadow-primary text-center border-radius-xl mt-n4 position-absolute">
-                <i class="material-icons opacity-10">input</i>
-              </div>
-              <div class="text-end pt-1">
-                <p class="text-sm mb-0 text-capitalize">Total Barang Masuk</p>
-                <h4 class="mb-0">{{$totalReceiveMonthly}} Boks/Bulan Ini</h4>
-              </div>
-            </div>
-            <hr class="dark horizontal my-0">
+      @elseif (session('warning'))
+          <div class="alert alert-warning text-white m-3">
+              {{ session('warning') }}
           </div>
-        </div>
-        <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
-          <div class="card">
-            <div class="card-header p-3 pt-2">
-              <div class="icon icon-lg icon-shape bg-gradient-success shadow-success text-center border-radius-xl mt-n4 position-absolute">
-                <i class="material-icons opacity-10">output</i>
-              </div>
-              <div class="text-end pt-1">
-                <p class="text-sm mb-0 text-capitalize">Total Barang Keluar</p>
-                <h4 class="mb-0">{{$totalPutawayMonthly}} Boks/Bulan Ini</h4>
-              </div>
-            </div>
-            <hr class="dark horizontal my-0">
+      @elseif (session('primary'))
+          <div class="alert alert-primary text-white m-3">
+              {{ session('primary') }}
           </div>
-        </div>
-      </div>
-      <div class="container-fluid py-4">
-        <div class="row">
-          <div class="col-lg-4">
-            <div class="row">
-              <div class="card">
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h5 class="font-weight-bolder">Logo Gudang</h5>
-                </div>
-                <div class="card-body py-3 d-flex flex-row align-items-center justify-content-between">
-                    <img src="{{asset('assets/img/icons/swif_full_black.png')}}" alt="Logo" width="270px" height="auto">
-                </div>
-              </div>
-            </div>
+      @elseif (session('danger'))
+          <div class="alert alert-danger text-white m-3">
+              {{ session('danger') }}
           </div>
-          <div class="col-lg-8">
-            <div class="card h-100">
-              <div class="card-header pb-0 p-3">
-                <div class="row">
-                  <div class="col-6 d-flex text-center">
-                    <h5 class="mb-0">Informasi Gudang</h5>
-                  </div>
-                </div>
-              @foreach($dataGudang as $gudang)
-              <div class="card-body p-3 pb-0">
-                <ul class="list-group">
-                  <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
-                    <div class="d-flex flex-column">  
-                      <h6 class="mb-1 text-dark font-weight-bold text-lg">Nama Gudang</h6>
-                    </div>
-                    <div class="d-flex align-items-center text-lg">
-                      {{$gudang->nama_gudang}}
-                    </div>
-                  </li>
-                  <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
-                    <div class="d-flex flex-column">
-                      <h6 class="mb-1 text-dark font-weight-bold text-lg">Tipe Gudang</h6>
-                    </div>
-                    <div class="d-flex align-items-center text-lg">
-                      {{$gudang->tipe}}
-                    </div>
-                  </li>
-                  <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
-                    <div class="d-flex flex-column">
-                      <h6 class="mb-1 text-dark font-weight-bold text-lg">Lokasi Gudang</h6>
-                    </div>
-                    <div class="d-flex align-items-center text-lg">
-                      {{$gudang->alamat}}
-                    </div>
-                  </li>
-                  <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
-                    <div class="d-flex flex-column">
-                      <h6 class="mb-1 text-dark font-weight-bold text-lg">Nama Pemilik/Instansi</h6>
-                    </div>
-                    <div class="d-flex align-items-center text-lg">
-                      {{$gudang->nama_pemilik}}
-                    </div>
-                  </li>
-                  <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
-                    <div class="d-flex flex-column">
-                      <h6 class="mb-1 text-dark font-weight-bold text-lg">Luas Pemilik/Instansi</h6>
-                    </div>
-                    <div class="d-flex align-items-center text-lg">
-                      {{$gudang->luas}}
-                    </div>
-                  </li>
-                 @if(Auth::user()->status=='SuperAdmin')
-                  <li class="list-group-item border-0 d-flex justify-content-between ps-0 mt-4 border-radius-lg">
-                    <div class="d-flex flex-column-reverse">
-                      <a href="#" data-bs-toggle="modal" data-bs-target="#ubahGudangModal" class="btn btn-success float-end" style="margin-top:-35px;">
-                        <i class="fa fa-box"></i> Ubah Data Gudang
+      @endif
+            <div class="card my-4">
+                <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                    <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3 px-4">
+                      <h6 class="text-white text-capitalize ps-3">Tabel Admin</h6>
+                      @if(Auth::user()->status=='SuperAdmin')
+                      <a href="#" data-bs-toggle="modal" data-bs-target="#daftarAdmin" class="btn btn-success float-end" style="margin-top:-35px;">
+                        <i class="fa fa-user-plus"></i> Tambah Admin
                       </a>
+
+                      @endif
                     </div>
-                  </li>
-                  @endif
-                </ul>
-              </div>
-              @endforeach
+                  </div>
+                  <div class="card-body px-0 pb-2">
+                      <div class="table-responsive p-0 m-4">
+                      <table class="table align-items-center mb-0" id="tabel">
+                          <thead>
+                          <tr>
+                              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nama Lengkap</th>
+                              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Username Terdaftar</th>
+                              <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Tingkatan</th>
+                              <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Tanggal Terdaftar</th>
+                              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Pengaturan</th>
+                          </tr>
+                          </thead>
+                          @foreach($admin as $dataAdmin)
+                          <tbody>
+                          <tr>
+                              <td>
+                              <div class="d-flex px-2 py-1">
+                                  <div class="d-flex flex-column justify-content-center">
+                                  <h6 class="mb-0 text-md">{{$dataAdmin->nama_lengkap}}</h6>
+                                  <p class="text-sm text-secondary mb-0">{{$dataAdmin->notelp}}</p>
+                                  </div>
+                              </div>
+                              </td>
+                              <td class="align-middle text-center">
+                                  <p class="text-md font-weight-bold mb-0">{{$dataAdmin->uname}}</p>
+                              </td>
+                              <td class="align-middle text-center text-sm">
+                                  @if ($dataAdmin->status == "Admin")
+                                      <span class="text-xs font-weight-bold text-white badge badge-sm bg-info"><i class="fa fa-user"></i> 
+                                  @elseif ($dataAdmin->status == "SuperAdmin")
+                                      <span class="text-xs font-weight-bold text-white badge badge-sm bg-secondary"><i class="fa fa-user-md"></i> 
+                                  @endif
+                              {{$dataAdmin->status}}</span>
+                              </td>
+                              <td class="align-middle text-center">
+                                  <span class="text-secondary text-md font-weight-bold">{{$dataAdmin->created_at->format('d-m-Y')}}</span>
+                              </td>
+                              <td class="align-middle">
+                                  <a href="{{ route('admin.edit', $dataAdmin->id) }}" class="text-secondary font-weight-bold text-md" data-toggle="tooltip" data-original-title="Edit barang">
+                                      <span class="badge badge-sm bg-warning"><i class="fa fa-pen"></i> Ubah</span>
+                                  </a>
+                              </td>
+                          </tr>
+                          </tbody>
+                          @endforeach
+                      </table>
+                      </div>
+                  </div>
             </div>
-          </div>
         </div>
       </div>
       <footer class="footer py-4  ">
@@ -291,6 +240,59 @@
       </footer>
     </div>
   </main>
+      <!-- Modal Daftar Admin -->
+      <div class="modal fade" id="daftarAdmin" tabindex="-3" role="dialog" aria-labelledby="daftarAdminLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header justify-content-center">
+              <h5 class="modal-title font-weight-bolder" id="daftarAdminLabel">Daftar Admin Baru</h5>
+            </div>
+            <div class="modal-body">
+              <form action="{{ route('daftar') }}" method="POST" role="form" id="daftar">
+                @csrf
+                <div class="form-group">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="form-group input-group input-group-outline mb-">
+                        <label for="example-text-input" class="form-label">Nama Lengkap</label>
+                        <input class="form-control" required autocomplete="off" type="text" name="nama_lengkap">
+                      </div>
+                    </div>
+                  </div>
+                    <div class="row mt-2 mb-2">
+                        <div class="col-md-6">
+                            <div class="form-group input-group input-group-outline mb-">
+                                <label for="example-text-input" class="form-label">Username</label>
+                                <input class="form-control" required autocomplete="off" type="text" name="uname">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group input-group input-group-outline mb-">
+                                <label for="example-text-input" class="form-label">Password</label>
+                                <input class="form-control" required autocomplete="off" type="text" name="password">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group input-group input-group-outline mb-">
+                                <label for="example-text-input" class="form-label">Nomor Telepon</label>
+                                <input class="form-control" required autocomplete="on" type="text" name="notelp">
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer">  
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <a href="/daftarAdmin" class="btn btn-success" onclick="event.preventDefault(); document.getElementById('daftar').submit();"><i class="fa fa-user-plus"></i> Daftarkan</a>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
   <div class="modal fade" id="logout" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -305,69 +307,29 @@
         </div>
         <div class="modal-footer">
           <a href="/logout" class="btn btn-outline-danger" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
-          <form id="logout-form" action="{{ route('logout') }}" method="post" style="display: none;">
+          <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
             @csrf
           </form>
         </div>
       </div>
     </div>
   </div>
-
-        <!-- Modal Ubah Gudang -->
-        <div class="modal fade" id="ubahGudangModal" tabindex="-3" role="dialog" aria-labelledby="ubahGudangLabel" aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header justify-content-center">
-                <h5 class="modal-title font-weight-bolder" id="ubahGudangLabel"> Ubah Data Gudang</h5>
-              </div>
-              <div class="modal-body">
-                <form id="ubahGudang" action="{{ route('ubahGudang') }}" method="POST" role="form" id="ubahGudang">
-                  @csrf
-                  <div class="form-group">
-                    <div class="row">
-                      <div class="col-md-6">
-                        <div class="form-group input-group input-group-outline mb-">
-                          <label for="example-text-input" class="form-label">Nama Gudang</label>
-                          <input class="form-control" required autocomplete="off" type="text" name="nama_gudang">
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="form-group input-group input-group-outline mb-">
-                          <label for="example-text-input" class="form-label">Tipe Gudang</label>
-                          <input class="form-control" required autocomplete="on" type="text" name="tipe">
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row mt-2 mb-4">
-                    <div class="col-md-6">
-                      <div class="form-group input-group input-group-outline mb-">
-                        <label for="example-text-input" class="form-label">Alamat Gudang</label>
-                        <input class="form-control" required autocomplete="off" type="text" name="alamat">
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="form-group input-group input-group-outline mb-">
-                        <label for="example-text-input" class="form-label">Nama Pemilik</label>
-                        <input class="form-control" required autocomplete="off" type="text" name="nama_pemilik">
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="form-group input-group input-group-outline mb-">
-                        <label for="example-text-input" class="form-label">Luas Gudang</label>
-                        <input class="form-control" required autocomplete="off" type="text" name="luas">
-                      </div>
-                    </div>
-                  </div>
-                  <div class="modal-footer">  
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-success"><i class="fa fa-pen"></i> Tambah</button>
-                  </div>
-                </form>
-              </div>
-            </div>
+  @elseif(!Auth::check())
+  <div class="container mt-8">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-header text-center">Error 401 - Unauthorized User</div>
+          <div class="card-body text-center">
+            <h3><i class="fas fa-times-circle text-danger"></i><br>ERROR 401</h3>
+            <h3>Oops! Anda tidak memiliki izin untuk mengakses halaman ini.</h3>
+            <h6><a href="/login" class="text-primary">Login </a>sebagai admin untuk mendapatkan izin ke halaman ini!!</h6>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+  @endif
   <div class="fixed-plugin">
     <a class="fixed-plugin-button text-dark position-fixed px-3 py-2">
       <i class="material-icons py-2">settings</i>
@@ -421,7 +383,9 @@
   <script src="{{asset('assets/js/core/bootstrap.min.js')}}"></script>
   <script src="{{asset('assets/js/plugins/perfect-scrollbar.min.js')}}"></script>
   <script src="{{asset('assets/js/plugins/smooth-scrollbar.min.js')}}"></script>
-  <script src="{{asset('assets/js/plugins/chartjs.min.js')}}"></script>
+  <script src="{{asset('assets/js/plugins/chartjs.min.js')}}"></script>>
+  <script src="{{asset('assets/js/jquery.min.js')}}"></script>
+  <script src="{{asset('assets/js/jquery.dataTables.min.js')}}"></script>
   <script>
     var win = navigator.platform.indexOf('Win') > -1;
     if (win && document.querySelector('#sidenav-scrollbar')) {
@@ -430,6 +394,10 @@
       }
       Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
     }
+    $(document).ready(function(){
+      $("#tabel").DataTable({
+      });
+    });
   </script>
   <!-- Github buttons -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>
@@ -438,3 +406,4 @@
 </body>
 
 </html>
+

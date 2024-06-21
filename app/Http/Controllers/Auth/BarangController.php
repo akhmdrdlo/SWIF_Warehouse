@@ -188,7 +188,6 @@ class BarangController extends Controller
     {
         $barang=Barang::findOrFail($id);
         $stok = $barang->stok;
-        $barang->delete();
 
         $records = new record();
         $records->brg_id = $barang->brg_id;
@@ -198,6 +197,8 @@ class BarangController extends Controller
         $records->stok = '-'.$stok;
         $records->proses = "HAPUS STOK";
         $records->save();
+
+        $barang->delete();
 
         return redirect('/barang')->with('danger', 'Barang berhasil dihapus.');
     }

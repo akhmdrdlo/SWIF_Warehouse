@@ -14,11 +14,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [App\Http\Controllers\Auth\LoginController::class, 'index']);
-Route::get('/signin', [App\Http\Controllers\Auth\LoginController::class, 'index']);
-Route::post('/signin', [App\Http\Controllers\Auth\LoginController::class, 'login']);
 
-Route::get('/daftarAdmin', [App\Http\Controllers\Auth\RegisterController::class, 'create']);
-Route::post('/daftarAdmin', [App\Http\Controllers\Auth\RegisterController::class, 'store']);
+Route::get('/signin', [App\Http\Controllers\Auth\LoginController::class, 'index']);
+Route::get('/login', [App\Http\Controllers\Auth\LoginController::class, 'index']);
+Route::post('/signin', [App\Http\Controllers\Auth\LoginController::class, 'login']);
 
 Route::get('/menu', [App\Http\Controllers\Auth\IntegratedController::class, 'index']);
 Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
@@ -45,3 +44,8 @@ Route::post('/addShipment', [App\Http\Controllers\Auth\ShipmentController::class
 Route::get('/shipmentDetail/{id}', [App\Http\Controllers\Auth\ShipmentController::class, 'show'])->name('shipDetail.show');
 Route::post('/shipmentEdit/{id}', [App\Http\Controllers\Auth\ShipmentController::class, 'edit'])->name('shipDetail.edit');
 
+Route::get('/admin', [App\Http\Controllers\Auth\RegisterController::class, 'indexAdmn']);
+Route::post('/daftarAdmin', [App\Http\Controllers\Auth\RegisterController::class, 'store'])->name('daftar');
+Route::get('/updateAdmin/{id}', [App\Http\Controllers\Auth\RegisterController::class, 'edit'])->name('admin.edit');
+Route::put('/updateAdmin/{id}', [App\Http\Controllers\Auth\RegisterController::class, 'update'])->name('admin.update');
+Route::delete('/updateAdmin/{id}', [App\Http\Controllers\Auth\RegisterController::class, 'destroy'])->name('admin.destroy');
